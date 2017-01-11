@@ -4,9 +4,9 @@ Students:
 
 .jar files:
 
-Compilation Instructions:
+Compilation Instructions: javac -cp json-simple-1.1.1.jar JsonGen.java thghtShreGen.java
 
-Run Instructions:
+Run Instructions: java -cp json-simple-1.1.1.jar:. thghtShreGen output.txt 12 
 
 Description of CML parameters:
 
