@@ -4,11 +4,13 @@
 
 ###.jar files: [json-simple-1.1.1.jar](https://code.google.com/archive/p/json-simple/downloads)
 
-###Compilation Instructions
-javac -cp json-simple-1.1.1.jar JsonGen.java thghtShreGen.java
+###Run and Compilation Instructions for JSON Generator
+_javac -cp json-simple-1.1.1.jar JsonGen.java thghtShreGen.java_
+_java -cp json-simple-1.1.1.jar:. thghtShreGen yourOutFile.txt 12_ 
 
-###Run Instructions
-java -cp json-simple-1.1.1.jar:. thghtShreGen yourOutFile.txt 12 
+###Compilation and Run Instructions for JSON Statistics
+_javac -cp json-simple-1.1.1.jar thghtShreStats.java thghtShreStatCreater.java_
+_java -cp json-simple-1.1.1.jar:. thghtShreStats  output.txt_
 
 ###Description of CML parameters:
 
