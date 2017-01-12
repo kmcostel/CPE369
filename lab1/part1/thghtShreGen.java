@@ -5,9 +5,12 @@ import org.json.simple.*;
 public class thghtShreGen {
    public static void main (String args[]) throws FileNotFoundException, IOException {
       /* Assume perfect user input for now */
-      String outFile = args[0];
-      int numObjs = Integer.parseInt(args[1]);
-
+      
+      if (args.length == 2) {
+         String outFile = args[0];
+         int numObjs = Integer.parseInt(args[1]);
+      }
+      
       /* possible option param (as mentioned in the spec): word file for messages */
       JsonGen gen = new JsonGen(numObjs, outFile);
 
