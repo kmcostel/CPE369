@@ -2,7 +2,7 @@
 * Holly Haraguchi (hharaguc@calpoly.edu)
 * Kevin Costello (kmcostel@calpoly.edu)
 
-###.jar files: [json-simple-1.1.1.jar](DownloadURLHere)
+###.jar files: [json-simple-1.1.1.jar](https://code.google.com/archive/p/json-simple/downloads)
 
 ###Compilation Instructions
 javac -cp json-simple-1.1.1.jar JsonGen.java thghtShreGen.java
