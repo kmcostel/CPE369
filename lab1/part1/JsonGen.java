@@ -17,7 +17,7 @@ public class JsonGen {
    private String outFile;
    private Set<String> userIds;
    private static final int NUM_USERS = 10000;
-   private static final String wordFile = "sense.txt";
+   private static final String wordFile = "words/sense.txt";
 
 
    public JsonGen (int numObjs, String fileName) throws FileNotFoundException {
