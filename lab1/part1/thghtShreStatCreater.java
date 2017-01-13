@@ -76,8 +76,13 @@ public class thghtShreStatCreater { /* I don't know what to call this */
          System.out.println(e.toString());
       }
      
-      System.out.println("Basic stats:");
+      System.out.println("\nBasic stats:\n");
+      System.out.println("Message Status Histogram: ");
       System.out.println("Total messages: " + numMsgs);
+      System.out.println("Public: " + Integer.toString(publicCnt));
+      System.out.println("Protected: " + Integer.toString(protectedCnt));
+      System.out.println("Private: "+ Integer.toString(privateCnt) + "\n");
+      
       System.out.println("Number of unique users: " + users.size());
       System.out.println("Average word count: " + (float)(numWords) / numMsgs);
       System.out.println("Average character count: " + (float)(numChars) / numMsgs);           
