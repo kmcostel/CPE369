@@ -15,5 +15,5 @@
 ###Description of CML parameters:
 
 ###Description of generation assumptions made:
-* We assume that the only possible recipient values given in the input is one of the 4 following values : {subscribers, self, all, <userID>}
+* We assume that the only possible recipient values given in the input is one of the 4 following values : {subscribers, self, all, users}
 * For the conditional histograms in TR6 part 1, we are only printing out the above 4 possible values as possible recipients. We are not printing out the frequency of received messages for every unique userID; we are clumping all the possible userIDs of recipients to be processed as a single statistic under the recipient value "users".
