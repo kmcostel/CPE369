@@ -57,7 +57,7 @@ public class JsonGen {
       obj.put("messageId", genMsgId());
       obj.put("user", user);
       obj.put("status", msgStatus);
-      obj.put("recepient", genRecipient());
+      obj.put("recipient", genRecipient());
       obj.put("text", genText());     
       
       if (rand < 0.13) { /* the in-response message id needs to be less than msgId */

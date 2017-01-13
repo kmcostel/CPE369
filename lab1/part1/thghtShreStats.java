@@ -8,10 +8,11 @@ public class thghtShreStats {
        */
        String inFile;
        String outFile;
-       
+              
        if (args.length == 0) {
           /* Output a help message */
-          System.out.println("We need more than that.");
+          printHelp();
+          System.exit(1);
        }
        else if (args.length == 1) {
        /* No output to a file */
@@ -25,10 +26,14 @@ public class thghtShreStats {
           thghtShreStatCreater stats = new thghtShreStatCreater(inFile, outFile);
        }
        else {
-          System.out.println("Why so many arguments? Should we still take the first two?");
+          printHelp();
+          System.exit(1);
        }
-       
-      
+   }
+   
+   private static void printHelp() {
+      String helpMsg = "Display help message here";
+      System.out.println(helpMsg);
    }
   
 }
