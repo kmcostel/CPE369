@@ -19,7 +19,9 @@ public class JsonGen {
    private static final int NUM_USERS = 10000;
    private static final String wordFile = "words/sense.txt";
 
-
+   /* @fileName: name of the output file 
+    * @numObjs: number of JSON objects to generate
+    */
    public JsonGen (int numObjs, String fileName) throws FileNotFoundException {
       msgId = 0;
       this.numObjs = numObjs;
@@ -40,6 +42,7 @@ public class JsonGen {
       }
    }
 
+   /* Returns an initialized JSONObject */
    public JSONObject JSON_Object() {
       Random random = new Random();
       JSONObject obj = new JSONObject();
@@ -52,15 +55,15 @@ public class JsonGen {
       /* Add the unique ID to the set */
       userIds.add(user);
       
-      /* Init the JSON object */
-      
+      /* Init the JSON object */      
       obj.put("messageId", genMsgId());
       obj.put("user", user);
       obj.put("status", msgStatus);
       obj.put("recipient", genRecipient());
       obj.put("text", genText());     
       
-      if (rand < 0.13) { /* the in-response message id needs to be less than msgId */
+      /* The in-response message ID must be less than |msgId| */
+      if (rand < 0.13) { 
          obj.put("in-response", random.nextInt(msgId));   
       }
       
@@ -72,6 +75,7 @@ public class JsonGen {
       return Integer.toString(msgId++);  
    }
    
+   /* Generates a random, unique user ID */
    public String genUserId() {
       int id;    
       Random random = new Random();
@@ -84,33 +88,33 @@ public class JsonGen {
       return "u" + Integer.toString(id);
    }
    
+   /* Generates a random message status */
    private String genStatus() {
       double rand = Math.random();
       String status = "";
        
-      if (rand < 0.5) {
+      /* Most messages are public */
+      if (rand < 0.7) {
          status = "public"; // {any recipient value}
-      }
-      
-      /* Most protected messages are addressed to "subscribers" */
-      /* {self, subscribers, or userID} as possible recipients */
-      else if (rand < 0.75) {
+      }     
+      else if (rand < 0.85) {
          status = "protected"; 
-      }
-      
-      /* Private messages can have "self" or "userId" as recipient */
+      }     
       else {
          status = "private"; 
       } 
       return status;
    }   
    
-   /* Recipient is either "all", "self", "subscribers", or any single user id */
+   /* Generates a valid, random recipient based on the message's status
+    * Recipient can be "all", "self", "subscribers", or any single user id
+    */
    private String genRecipient() {
        String recipient = "";
        double rand = Math.random();
        
-       if (msgStatus.compareTo("public") == 0) {
+       /* Public messages can be sent to all recipients */
+       if (msgStatus.equals("public")) {
           if (rand < 0.45) {
              recipient = "subscribers";
           }
@@ -124,8 +128,8 @@ public class JsonGen {
              recipient = genUserId();
           }
        }
-       /* Private can either have self or a userID as a recipient */
-       else if (msgStatus.compareTo("private") == 0) {
+       /* Private messages can be sent to self or a userID */
+       else if (msgStatus.equals("private")) {
           if (rand < 0.8) { /* User id is recipient */
              recipient = genUserId();
           }
@@ -133,27 +137,28 @@ public class JsonGen {
               recipient = "self";
           }
        }
-       else if (msgStatus.compareTo("protected") == 0) {
-          if (rand < 0.6) {
+       /* Protected messages can be sent to subscribers, self, or a userID */
+       else if (msgStatus.equals("protected")) {
+          /* Most protected messages are addressed to subscribers */
+          if (rand < 0.7) {
              recipient = "subscribers";
           }
-          else if (rand < 0.7) {
+          else if (rand < 0.85) {
              recipient = "self";
-          }
-          else if (rand < 0.8) {
-             recipient = "all";
           }
           else { /* < 1.0 */
              recipient = genUserId();
           }
        }
        else {
-          recipient = "How did you get here dum dum?";
+          System.out.println("ERROR: Message status '" + msgStatus + "' not recognized.");
+          System.exit(1);
        }
 
        return recipient;
    }
    
+   /* Generates a random string with length between 2 and 40 characters */
    private String genText() {
       String text = "";
       Random random = new Random();
