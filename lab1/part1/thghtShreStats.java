@@ -1,9 +1,8 @@
-
+/* Authors: Holly Haraguchi (hharaguc@calpoly.edu), Kevin Costello (kmcostel@calpoly.edu) */
 public class thghtShreStats {
   
    public static void main(String args[]) {
-      /* Error handling in here.
-       * Get file name and whether output will also go into a file.
+      /* Get file name and whether output will also go into a file.
        * Pass along JSON file name of input to the stat generator
        */
        String inFile;

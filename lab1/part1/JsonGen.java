@@ -1,3 +1,4 @@
+/* Authors: Holly Haraguchi (hharaguc@calpoly.edu), Kevin Costello (kmcostel@calpoly.edu) */
 import java.lang.Math;
 import java.lang.System;
 import java.util.*;
