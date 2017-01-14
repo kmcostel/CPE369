@@ -223,7 +223,90 @@ public class thghtShreStatCreater {
       obj.put("num-prot-status-msgs", protectedCnt);
       obj.put("num-priv-status-msgs", privateCnt);
       obj.put("num-sub-recips", totalSubMsgs);
-      obj.put("num-self-recips", tot
+      obj.put("num-self-recips", totalSelfMsgs);
+      obj.put("num-all-recips", totalAllMsgs);
+      obj.put("num-user-recips", totalUserMsgs);
+      obj.put("in-response-all-msgs", inRespCnt);
+      obj.put("not-response-all-msgs", (numMsgs - inRespCnt));
+
+      for (int i = 2; i <= 40; i++) {
+         obj.put("num-msgs-len-" + i, msgWordMap.get(i));
+      }
+
+      obj.put("avg-len-words-public-msgs", avgWordCntPub);
+      obj.put("avg-len-chars-public-msgs", avgCharCntPub);
+      obj.put("avg-len-words-prot-msgs", avgWordCntProt);
+      obj.put("avg-len-chars-prot-msgs", avgCharCntProt);
+      obj.put("avg-len-words-priv-msgs", avgWordCntPriv);
+      obj.put("avg-len-chars-priv-msgs", avgCharCntPriv);
+
+      obj.put("std-dev-avg-len-words-pub", stdDevWordPub);
+      obj.put("std-dev-avg-len-chars-pub", stdDevCharPub);
+      obj.put("std-dev-avg-len-words-prot", stdDevWordProt);
+      obj.put("std-dev-avg-len-chars-prot", stdDevCharProt);
+      obj.put("std-dev-avg-len-words-priv", stdDevWordPriv);
+      obj.put("std-dev-avg-len-chars-priv", stdDevCharPriv);
+
+      obj.put("avg-len-words-subs", avgSubWords);
+      obj.put("avg-len-chars-subs", avgSubChars);
+      obj.put("avg-len-words-self", avgSelfWords);
+      obj.put("avg-len-chars-self", avgSelfChars);
+      obj.put("avg-len-words-user", avgUserWords);
+      obj.put("avg-len-chars-user", avgUserChars);
+      obj.put("avg-len-words-all", avgAllWords);
+      obj.put("avg-len-chars-all", avgAllChars);
+
+      obj.put("std-dev-avg-len-words-subs", subWordStdDev);
+      obj.put("std-dev-avg-len-chars-subs", subCharStdDev);
+      obj.put("std-dev-avg-len-words-self", selfWordStdDev);
+      obj.put("std-dev-avg-len-chars-self", selfCharStdDev);
+      obj.put("std-dev-avg-len-words-user", userWordStdDev);
+      obj.put("std-dev-avg-len-chars-user", userCharStdDev);
+      obj.put("std-dev-avg-len-words-all", allWordStdDev);
+      obj.put("std-dev-avg-len-chars-all", allCharStdDev);
+
+      obj.put("avg-word-len-response", avgRespWords);
+      obj.put("avg-word-len-not-resp", avgNoRespWords);
+      obj.put("std-dev-avg-len-words-response", stdDevRespWords);
+      obj.put("std-dev-avg-len-words-no", stdDevNoRespWords);
+
+      obj.put("avg-chars-len-response", avgRespChars);
+      obj.put("avg-chars-len-not-resp", avgNoRespChars);
+      obj.put("std-dev-avg-len-chars-response", stdDevRespChars);
+      obj.put("std-dev-avg-len-chars-no", stdDevNoRespChars);
+
+      obj.put("pub-all", pubAll);
+      obj.put("pub-self", pubSelf);
+      obj.put("pub-subs", pubSub);
+      obj.put("pub-users", pubUser);
+
+      obj.put("prot-all", protAll);
+      obj.put("prot-self", protSelf);
+      obj.put("prot-subs", protSub);
+      obj.put("prot-users", protUser);
+
+      obj.put("priv-all", privAll);
+      obj.put("priv-self", privSelf);
+      obj.put("priv-subs", privSub);
+      obj.put("priv-users", privUser);
+
+      obj.put("pub-resp", pubResp);
+      obj.put("prot-resp", protResp);
+      obj.put("priv-resp", privResp);
+
+      obj.put("all-resp", allRespCnt);
+      obj.put("self-resp", selfRespCnt);
+      obj.put("sub-resp", subRespCnt);
+      obj.put("user-resp", userRespCnt);
+
+      try (FileWriter file = new FileWriter(outFile)) {
+         file.write(obj.toJSONString());
+         file.close();
+      }
+      catch (Exception e) {
+         System.out.println("Error opening '" + outFile + "': " + e.toString());
+      }      
+
    }
    
    private void createStats() {      
@@ -347,7 +430,7 @@ public class thghtShreStatCreater {
       
       /* Output */
       /* Basic stats */
-      System.out.println("Basic stats:\n");
+      System.out.println("Basic stats:");
       System.out.println("   - Total messages: " + numMsgs);
       System.out.println("   - Total unique users: " + users.size());
       System.out.println("   - Average word count: " + avgWordCnt);
@@ -360,21 +443,21 @@ public class thghtShreStatCreater {
       System.out.println("   - Public: " + publicCnt);
       System.out.println("   - Protected: " + protectedCnt);
       System.out.println("   - Private: " + privateCnt);
-      /* TR4.2 needed */
-      System.out.println("\nMessage Recipient Histogram:");
-      System.out.println("   - subscribers: " + totalSubMsgs);
-      System.out.println("   - self: " + totalSelfMsgs);
-      System.out.println("   - all: " + totalAllMsgs);
-      System.out.println("   - users: " + totalUserMsgs);
       
-      System.out.println("")
+      System.out.println("Message Recipient Histogram:");
+      System.out.println("   - All: " + totalAllMsgs);
+      System.out.println("   - Self: " + totalSelfMsgs);
+      System.out.println("   - Subscribers: " + totalSubMsgs);
+      System.out.println("   - Users: " + totalUserMsgs);
+      
+      System.out.println("Messages In-Response Histogram");
       System.out.println("   - Messages in response: " + inRespCnt);
       System.out.println("   - Messages not in response: " + (numMsgs - inRespCnt));
       System.out.println("   - Number of messages for every number of words: " );
       printMsgWordDist();
       
       /* Stats by message type */
-      System.out.println("Stats for Subsets of Messages");
+      System.out.println("\nStats for Subsets of Messages");
       System.out.println("Average message length by status:");
       if (publicCnt > 0) {
          System.out.println("Public:");
@@ -497,7 +580,7 @@ public class thghtShreStatCreater {
       System.out.println("   - Users: " + protUser);
           
       /* Private messages */        
-      System.out.println("Protected messages:");
+      System.out.println("Private messages:");
       System.out.println("   - All: " + privAll);
       System.out.println("   - Self: " + privSelf); 
       System.out.println("   - Subscribers: " + privSub);       

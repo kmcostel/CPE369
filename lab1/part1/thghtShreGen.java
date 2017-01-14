@@ -10,18 +10,20 @@ public class thghtShreGen {
     * |numObjs| |outputFileName|
     */
    public static void main (String args[]) throws FileNotFoundException, IOException {
+      int numObjs = -1;
+
       /* Valid user input */
       if (args.length == 2) {
          String outFile = args[0];
          try {
-            int numObjs = Integer.parseInt(args[1]);
-            JsonGen gen = new JsonGen(numObjs, outFile);
+            numObjs = Integer.parseInt(args[1]);
          }
          catch (Exception e) {
             System.out.println("ERROR: " + e.toString());
-            System.out.println("Usage: thghtShreGen <numJsonObjects> <outputFileName>")
+            System.out.println("Usage: thghtShreGen <numJsonObjects> <outputFileName>");
          }      
-         
+         JsonGen gen = new JsonGen(numObjs, outFile);
+
          try (FileWriter file = new FileWriter(outFile)) {
             for (int i = 0; i < numObjs; i++) {
                file.write(gen.JSON_Object().toJSONString() + "\n");
@@ -30,11 +32,11 @@ public class thghtShreGen {
          }
          catch (Exception e) {
             System.out.println("Error opening '" + outFile + "': " + e.toString());
-            System.out.println("Usage: thghtShreGen <numJsonObjects> <outputFileName>")
+            System.out.println("Usage: thghtShreGen <numJsonObjects> <outputFileName>");
          }
       }      
       else {
-         System.out.println("Usage: thghtShreGen <numJsonObjects> <outputFileName>")
+         System.out.println("Usage: thghtShreGen <numJsonObjects> <outputFileName>");
       }
    }
 

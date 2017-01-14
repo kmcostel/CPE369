@@ -31,7 +31,7 @@ public class thghtShreStats {
    }
    
    private static void printHelp() {
-      String helpMsg = "Display help message here";
+      String helpMsg = "Usage: thghtShreStats <jsonInputFileName> [jsonOutputFileName]";
       System.out.println(helpMsg);
    }
   
