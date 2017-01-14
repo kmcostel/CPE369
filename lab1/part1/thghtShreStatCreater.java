@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class thghtShreStatCreater {
    /* All messages */
    private HashMap<String, Integer> recipients;
-   private HashSet<String> users; /* to report total number of unique users */
+   private HashSet<String> users; /* total number of unique authors */
    
    private int numMsgs;
    private int numWords;
@@ -26,6 +26,16 @@ public class thghtShreStatCreater {
    private ArrayList<Integer> responseChars;
    private ArrayList<Integer> noResponseWords;
    private ArrayList<Integer> noResponseChars;
+   
+   private double avgRespWords;
+   private double avgRespChars;
+   private double avgNoRespWords;
+   private double avgNoRespChars;
+   
+   private double stdDevRespWords;
+   private double stdDevRespChars;
+   private double stdDevNoRespWords;
+   private double stdDevNoRespChars;
    
    private double avgWordCnt; /* average word count for all messages */
    private double stdDevWordCnt; /* standard deviation of average word count */
@@ -150,6 +160,11 @@ public class thghtShreStatCreater {
    /* Key is number of words in message, value is a count */
    private HashMap<Integer, Integer> msgWordMap; 
    
+   /* Total messages by recipient */
+   private int totalSubMsgs;
+   private int totalSelfMsgs;
+   private int totalAllMsgs;
+   private int totalUserMsgs;
    
    /* Constructor without specified output file -- just print to console */
    public thghtShreStatCreater(String JSONFile) {
@@ -167,6 +182,7 @@ public class thghtShreStatCreater {
       initLists();
       initMsgWordMap();
       createStats();
+      writeJSONObj(outFile);
    }
    
    private void initLists() {
@@ -193,6 +209,21 @@ public class thghtShreStatCreater {
       responseChars = new ArrayList<Integer>();
       noResponseWords = new ArrayList<Integer>();
       noResponseChars = new ArrayList<Integer>();
+   }
+   
+   private void writeJSONObj(String outFile) {
+      JSONObject obj = new JSONObject();
+      obj.put("total-num-msgs", numMsgs);
+      obj.put("total-num-unique-authors", users.size());
+      obj.put("avg-len-words-all-msgs", avgWordCnt);
+      obj.put("std-dev-avg-len-words-all-msgs", stdDevWordCnt);
+      obj.put("avg-len-chars-all-msgs", avgCharCnt);
+      obj.put("std-dev-avg-len-chars-all-msgs", stdDevCharCnt);
+      obj.put("num-public-status-msgs", publicCnt);
+      obj.put("num-prot-status-msgs", protectedCnt);
+      obj.put("num-priv-status-msgs", privateCnt);
+      obj.put("num-sub-recips", totalSubMsgs);
+      obj.put("num-self-recips", tot
    }
    
    private void createStats() {      
@@ -298,6 +329,21 @@ public class thghtShreStatCreater {
       userWordStdDev = calcStdDev(userWordCount, avgUserWords);
       userCharStdDev = calcStdDev(userCharCount, avgUserChars);
       
+      avgRespWords = calcAvg(responseWords);
+      avgRespChars = calcAvg(responseChars);
+      avgNoRespWords = calcAvg(noResponseWords);
+      avgNoRespChars = calcAvg(noResponseChars);
+      
+      stdDevRespWords = calcStdDev(responseWords, avgRespWords);
+      stdDevRespChars = calcStdDev(responseChars, avgRespChars);
+      stdDevNoRespWords = calcStdDev(noResponseWords, avgNoRespWords);
+      stdDevNoRespChars = calcStdDev(noResponseChars, avgNoRespChars);
+      
+      /* Calculate total messages per recipient */
+      totalSubMsgs = pubSub + protSub + privSub;
+      totalSelfMsgs = pubSelf + protSelf + privSelf;
+      totalAllMsgs = pubAll + protAll + privAll;
+      totalUserMsgs = pubUser + protUser + privUser;
       
       /* Output */
       /* Basic stats */
@@ -314,6 +360,14 @@ public class thghtShreStatCreater {
       System.out.println("   - Public: " + publicCnt);
       System.out.println("   - Protected: " + protectedCnt);
       System.out.println("   - Private: " + privateCnt);
+      /* TR4.2 needed */
+      System.out.println("\nMessage Recipient Histogram:");
+      System.out.println("   - subscribers: " + totalSubMsgs);
+      System.out.println("   - self: " + totalSelfMsgs);
+      System.out.println("   - all: " + totalAllMsgs);
+      System.out.println("   - users: " + totalUserMsgs);
+      
+      System.out.println("")
       System.out.println("   - Messages in response: " + inRespCnt);
       System.out.println("   - Messages not in response: " + (numMsgs - inRespCnt));
       System.out.println("   - Number of messages for every number of words: " );
@@ -402,6 +456,28 @@ public class thghtShreStatCreater {
          System.out.println("   - Word count: " + selfWordStdDev);
          System.out.println("   - Char count: " + selfCharStdDev);
       }
+      
+      System.out.println("\nStats on messages written in response, and messages not written in response");
+      if (avgRespWords > 0) {
+         System.out.println("Average word counts:");
+         System.out.println("   - In response: " + avgRespWords);
+         System.out.println("   - Not in response: " + avgNoRespWords);
+      }
+      if (avgRespWords > 0) { 
+         System.out.println("Word standard deviation:");
+         System.out.println("   - In response: " + stdDevRespWords);
+         System.out.println("   - Not in response: " + stdDevNoRespWords);
+      }   
+      if (avgRespChars > 0) { 
+         System.out.println("Average char counts:");
+         System.out.println("   - In response: " + avgRespChars);
+         System.out.println("   - Not in response: " + avgNoRespChars);
+      }   
+      if (avgRespChars > 0) {   
+         System.out.println("Char standard deviation:");
+         System.out.println("   - In response: " + stdDevRespChars);
+         System.out.println("   - Not in response: " + stdDevNoRespChars);
+      }
 
       /* Conditional Histograms */
       System.out.println("\nHistogram of recipient values, by status");
@@ -427,18 +503,12 @@ public class thghtShreStatCreater {
       System.out.println("   - Subscribers: " + privSub);       
       System.out.println("   - Users: " + privUser);     
       
-      /* Calculate total messages per recipient */
-      int totalSubMsgs = pubSub + protSub + privSub;
-      int totalSelfMsgs = pubSelf + protSelf + privSelf;
-      int totalAllMsgs = pubAll + protAll + privAll;
-      int totalUserMsgs = pubUser + protUser + privUser;
-      
-      System.out.println("In-response flag present for _/_ messages, by status value:");
+      System.out.println("In-response flag present for (_ of _) messages, by status type:");
       System.out.println("   - Public: " + pubResp + "/" + publicCnt);
       System.out.println("   - Protected: " + protResp + "/" + protectedCnt);
       System.out.println("   - Private: " + privResp + "/" + privateCnt);
             
-      System.out.println("In-response flag present for _/_ messages, by recipient value:");
+      System.out.println("In-response flag present for (_ of _) messages, by recipient type:");
       System.out.println("   - All: " + allRespCnt + "/" + totalAllMsgs);
       System.out.println("   - Self: " + selfRespCnt + "/" + totalSelfMsgs);
       System.out.println("   - Subscribers: " + subRespCnt + "/" + totalSubMsgs);
