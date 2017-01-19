@@ -1,0 +1,10 @@
+{"respondent":{"income":4,"age":37,"name":{"last":"CYWINSKI","first":"WILLARD"},"state":"NC","gender":"F","education":2},"RID":1,"ratings":["5.1","4.4","5.1","0.6","4.7","7.3","9.3","6.8","5.3","9.5","5.1","5.1","8.3"]}
+{"respondent":{"income":3,"age":25,"name":{"last":"BARDILL","first":"CLARA"},"state":"MA","gender":"F","education":2},"RID":2,"ratings":["7.5","2.5","5.1","3.7","2.8","8.7","6.6","7.4","7.5","3","5.8","7.2","6.5"]}
+{"respondent":{"income":4,"age":61,"name":{"last":"OYSTON","first":"MERLENE"},"state":"MI","gender":"M","education":3},"RID":3,"ratings":["8.7","1.3","3.9","1.6","1","8.7","5.9","1.5","8.7","8.1","3.4","8.8","9.1"]}
+{"respondent":{"income":4,"age":81,"name":{"last":"MONTEZUMA","first":"BRYAN"},"state":"CA","gender":"M","education":3},"RID":4,"ratings":["8","6","3.2","9.2","6.2","3.4","4.1","6.7","8.1","6.1","3.3","8.8","8.5"]}
+{"respondent":{"income":5,"age":38,"name":{"last":"HERZBERGER","first":"BOBBIE"},"state":"NC","gender":"N\/A","education":3},"RID":5,"ratings":["6.1","9.6","0.2","2.8","9.5","6.1","5.7","8.6","6.7","8.1","0.9","6.5","2.7"]}
+{"respondent":{"income":2,"age":62,"name":{"last":"SCHREMP","first":"BOB"},"state":"MA","gender":"F","education":0},"RID":6,"ratings":["5","9.7","0.4","0.7","9.6","0","2.4","1","5.9","8.4","0.7","5","0.7"]}
+{"respondent":{"income":4,"age":63,"name":{"last":"LAWTER","first":"JOSIE"},"state":"IL","gender":"N\/A","education":0},"RID":7,"ratings":["5.6","4.4","3.9","3.7","5","8.7","9.7","1.2","6","0.2","3.9","6","7.2"]}
+{"respondent":{"income":5,"age":32,"name":{"last":"KRISTEK","first":"GUSSIE"},"state":"NY","gender":"M","education":3},"RID":8,"ratings":["9.4","0.8","0.5","6.3","0.7","1.1","9.9","3.7","9.5","9.2","0.5","9.4","9.2"]}
+{"respondent":{"income":0,"age":27,"name":{"last":"MESSMER","first":"ARNOLD"},"state":"IL","gender":"F","education":1},"RID":9,"ratings":["9","5.2","0.2","7.3","5.1","0","6.9","1","8.4","6.2","0.7","8.7","0"]}
+{"respondent":{"income":2,"age":37,"name":{"last":"SUWANNAKINTHO","first":"HA"},"state":"MS","gender":"F","education":3},"RID":10,"ratings":["6.4","7.9","0.5","8.8","7.4","5.2","2.9","1.1","6.3","1.6","0.2","6.4","1.7"]}
