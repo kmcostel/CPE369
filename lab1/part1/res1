@@ -1,0 +1,134 @@
+Basic stats:
+
+   - Total messages: 10
+   - Total unique users: 10
+   - Average word count: 20.0
+   - Standard deviation for average word count: 9.705668446840743
+   - Average character count: 0.0
+   - Standard deviation for average character count: 352.1255457929742
+Message Type Histogram: 
+   - Public: 10
+   - Protected: 0
+   - Private: 0
+
+Message Recipient Histogram:
+   - All: 5
+   - Self: 0
+   - Subscribers: 2
+   - Users: 3
+
+Messages In-Response Histogram
+   - Messages in response: 1
+   - Messages not in response: 9
+   - Number of messages for every number of words: 
+2: 0
+3: 0
+4: 0
+5: 0
+6: 0
+7: 2
+8: 0
+9: 0
+10: 0
+11: 0
+12: 1
+13: 0
+14: 0
+15: 1
+16: 0
+17: 0
+18: 1
+19: 0
+20: 0
+21: 0
+22: 1
+23: 0
+24: 1
+25: 0
+26: 0
+27: 1
+28: 0
+29: 1
+30: 0
+31: 0
+32: 0
+33: 0
+34: 0
+35: 0
+36: 0
+37: 0
+38: 0
+39: 1
+40: 0
+Stats for Subsets of Messages
+Average message length by status:
+Public:
+   - By word count: 20.0
+   - By character count: 319.0
+
+Standard deviations of each average by status:
+Public:
+   - By word count: 9.705668446840743
+   - By character count: 149.10197852476674
+
+Averages of messages for each recipient type:
+For subscriber recipients: 
+   - Average word count: 17.0
+   - Average char count: 276.0
+For user recipients: 
+   - Average word count: 26.666666666666668
+   - Average char count: 412.6666666666667
+For all recipients: 
+   - Average word count: 17.2
+   - Average char count: 280.0
+
+Standard deviations of messages for each recipient type: 
+For subscriber recipients:
+   - Word count: 10.0
+   - Char count: 150.0
+For all recipients:
+   - Word count: 5.979966555090422
+   - Char count: 101.24820986071803
+For user recipients:
+   - Word count: 11.145502331533658
+   - Char count: 171.6922311061925
+
+Stats on messages written in response, and messages not written in response
+Average word counts:
+   - In response: 7.0
+   - Not in response: 21.444444444444443
+Word standard deviation:
+   - In response: 0.0
+   - Not in response: 9.154368855131548
+Average char counts:
+   - In response: 126.0
+   - Not in response: 340.44444444444446
+Char standard deviation:
+   - In response: 0.0
+   - Not in response: 141.7847438205074
+
+Histogram of recipient values, by status
+Public messages:
+   - All: 5
+   - Self: 0
+   - Subscribers: 2
+   - Users: 3
+Protected messages:
+   - All: 0
+   - Self: 0
+   - Subscribers: 0
+   - Users: 0
+Private messages:
+   - All: 0
+   - Self: 0
+   - Subscribers: 0
+   - Users: 0
+In-response flag present for (_ of _) messages, by status type:
+   - Public: 1/10
+   - Protected: 0/0
+   - Private: 0/0
+In-response flag present for (_ of _) messages, by recipient type:
+   - All: 1/5
+   - Self: 0/0
+   - Subscribers: 0/2
+   - User: 0/3
