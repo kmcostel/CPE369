@@ -4,6 +4,9 @@
 * Holly Haraguchi (hharaguc@calpoly.edu)
 * Kevin Costello (kmcostel@calpoly.edu)
 
+###Downloads
+* .jar files: [json-simple-1.1.1.jar](https://code.google.com/archive/p/json-simple/downloads)
+
 ###Compilation Instructions:
     javac -cp json-simple-1.1.1.jar surveyGen.java SurveyJson.java
     java -cp json-simple-1.1.1.jar:. surveyGen <outputFileName> <numJsonObjects>
@@ -22,4 +25,8 @@
                       the JSON statistics, is to be writren to.
 
 ###General Assumptions: 
-* None to note
+* We interpreted non-zero ratings to mean any score for a movie that is not zero.
+  Another possible way this might have been interpreted is for non zero ratings
+  to mean ratings done by individuals who gave no zero ratings for any movie. 
+* In our averages for movie ratings and standard deviations, we are only using
+  data from individuals who have seen the movie (ie. they provided scores > 0)
