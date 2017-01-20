@@ -218,7 +218,7 @@ public class SurveyReader {
         System.out.println("  - High school graduate: " + numEdu2);
         System.out.println("  - Some college: " + numEdu3);
         System.out.println("  - BS degree: " + numEdu4);
-        System.out.println("  - Advanced degree (MS, Ph.D., JD, MD, etc. : " + numEdu5);
+        System.out.println("  - Advanced degree (MS, Ph.D., JD, MD, etc.) : " + numEdu5);
         
         /* Geographic distribution */
         System.out.println("\nDistribution of respondents by geographic region:");
@@ -279,9 +279,9 @@ public class SurveyReader {
         System.out.println("\nAverage movie rating by gender:"); // should we divide by numMales?
         for (int i = 0; i < NUM_MOVIES; i++) {
             System.out.println("  -" + movieNames.get(i) + ":");
-            System.out.println("    - Males: " + (maleRatings[i] / numMales)); //numMales?
-            System.out.println("    - Females: " + (femaleRatings[i] / numFemales)); //numFemales?
-            System.out.println("    - N/A responses: " + (naRatings[i] / numNa));
+            System.out.println("    - Males: " + (maleRatings[i] / numMales > 0 ? maleRatings[i] / numMales : 0)); //numMales?
+            System.out.println("    - Females: " + (femaleRatings[i] / numFemales > 0 ? femaleRatings[i] / numFemales : 0)); //numFemales?
+            System.out.println("    - N/A responses: " + (naRatings[i] / numNa > 0 ? naRatings[i] / numNa : 0));
         }
     }
     
@@ -628,7 +628,7 @@ public class SurveyReader {
             score += list.get(i);
         }
         
-        return score / size;
+        return score / size > 0 ? score / size : 0;
     }
     
     private double calcStdDev(ArrayList<Double> data, double mean) {

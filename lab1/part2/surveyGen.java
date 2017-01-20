@@ -23,7 +23,7 @@ public class surveyGen {
          }
          catch (Exception e) {
             System.out.println("ERROR: " + e.toString());
-            System.out.println("Usage: surveyGen <outputFileName> <numJsonObjects>");
+            printHelp();
          }      
          
          /* Initialize the SurveyJson object */
@@ -37,12 +37,17 @@ public class surveyGen {
          }
          catch (Exception e) {
             System.out.println("Error opening '" + outFile + "': " + e.toString());
-            System.out.println("Usage: surveyGen <outputFileName> <numJsonObjects>");
+            printHelp();
          }
       }      
       else {
-         System.out.println("Usage: surveyGen <outputFileName> <numJsonObjects>");
+         printHelp();
       }
+   }
+
+   private static void printHelp() {
+      String helpMsg = "Usage: surveyStats <jsonInputFileName> [jsonOutputFileName]";
+      System.out.println(helpMsg);
    }
 
 }
