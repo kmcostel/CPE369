@@ -13,12 +13,12 @@
 
 ###Description of CML parameters
    JSON Generator parameters:
-    <outputFileName>: The name of the file the generated JSON objects is to be written to.
-    <numJsonObjects>: The number of JSON objects to be generated.
+     <outputFileName>: The name of the file the generated JSON objects is to be written to.
+     <numJsonObjects>: The number of JSON objects to be generated.
 
    JSON Statistics parameters:
-    <jsonInputFileName>: The file that contains the JSON objects to be analyzed.    
-    [outputFileName]: Optional parameter; the name of the file that a JSON object, representing 
+     <jsonInputFileName>: The file that contains the JSON objects to be analyzed.    
+     [outputFileName]: Optional parameter; the name of the file that a JSON object, representing 
                       the JSON statistics, is to be writren to.
 
 General Assumptions:
