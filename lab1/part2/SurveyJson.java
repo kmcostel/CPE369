@@ -241,8 +241,8 @@ public class SurveyJson {
                 firstName = getFemaleName();
             }
         }
-        nameObj.put("first", firstName);
-        nameObj.put("last", lastName);
+        nameObj.put("first", firstName.substring(0,1) + firstName.substring(1).toLowerCase());
+        nameObj.put("last", lastName.substring(0,1) + lastName.substring(1).toLowerCase());
         
         return nameObj;
     }
@@ -382,12 +382,14 @@ public class SurveyJson {
         
         /* Dogma; either really liked or disliked */
         chance = Math.random();
-        double dogScore = 0;
-        if (chance <= 0.45) {
-            dogScore = rand.nextInt(4) + 6 + Math.random();
-        }
-        else if (chance <= 0.98) {
+        /* Default to good rating */
+        double dogScore = rand.nextInt(4) + 6 + Math.random();
+       
+        if (chance <= 0.5) {
             dogScore = rand.nextInt(4) + Math.random();
+        }
+        else if (hasAll < 0.4) {
+            dogScore = 0;
         }
         
         /* Suicide Squad; influenced by Star Wars' score*/
@@ -399,12 +401,15 @@ public class SurveyJson {
         
         /* Beverly Hills Cop; either really liked or disliked */
         chance = Math.random();
-        double bevScore = 0;
-        if (chance <= 0.45) {
-            bevScore = rand.nextInt(4) + 6 + Math.random();
-        }
-        else if (chance <= 0.9) {
+        /* Default to good rating */
+        
+        double bevScore = rand.nextInt(4) + 6 + Math.random();
+        
+        if (chance <= 0.5) {
             bevScore = rand.nextInt(4) + Math.random();
+        }
+        else if (hasAll < 0.4) {
+            bevScore = 0;
         }
         
         /* Add the ratings to the JSONArray */

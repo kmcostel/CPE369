@@ -1,0 +1,5 @@
+{"respondent":{"income":5,"age":18,"name":{"last":"Weiderhold","first":"Brock"},"state":"WA","gender":"N\/A","education":2},"RID":1,"ratings":["6.9","1.1","3","7.4","2","7.6","0.8","2.7","6","0.5","2.7","6","1.4"]}
+{"respondent":{"income":5,"age":18,"name":{"last":"Weiderhold","first":"Brock"},"state":"WA","gender":"N\/A","education":2},"RID":1,"ratings":["6.9","1.1","3","7.4","2","7.6","0.8","2.7","6","0.5","2.7","6","1.4"]}
+{"respondent":{"income":5,"age":18,"name":{"last":"Weiderhold","first":"Brock"},"state":"WA","gender":"N\/A","education":2},"RID":1,"ratings":["6.9","1.1","3","7.4","2","7.6","0.8","2.7","6","0.5","2.7","6","1.4"]}
+{"respondent":{"income":5,"age":18,"name":{"last":"Weiderhold","first":"Brock"},"state":"WA","gender":"N\/A","education":2},"RID":1,"ratings":["6.9","1.1","3","7.4","2","7.6","0.8","2.7","6","0.5","2.7","6","1.4"]}
+{"respondent":{"income":5,"age":18,"name":{"last":"Weiderhold","first":"Brock"},"state":"WA","gender":"N\/A","education":2},"RID":1,"ratings":["6.9","1.1","3","7.4","2","7.6","0.8","2.7","6","0.5","2.7","6","1.4"]}

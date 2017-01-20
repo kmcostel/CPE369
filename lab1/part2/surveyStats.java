@@ -32,8 +32,6 @@ public class surveyStats {
             printHelp();
             System.exit(1);
         }
-        
-        
     }
    
     private static void printHelp() {
