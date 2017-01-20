@@ -30,3 +30,4 @@
   to mean ratings done by individuals who gave no zero ratings for any movie. 
 * In our averages for movie ratings and standard deviations, we are only using
   data from individuals who have seen the movie (ie. they provided scores > 0)
+ 
