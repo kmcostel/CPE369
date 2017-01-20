@@ -116,9 +116,9 @@ public class SurveyReader {
     double[] naRatings;
     
     /* Tracks non-zero ratings for each movie for each gender */
-    double[] maleRatingCounts;
-    double[] femaleRatingCounts;
-    double[] naRatingCounts;
+    int[] maleRatingCounts;
+    int[] femaleRatingCounts;
+    int[] naRatingCounts;
     
     private List<String> movieNames;
 
@@ -218,7 +218,7 @@ public class SurveyReader {
         System.out.println("  - High school graduate: " + numEdu2);
         System.out.println("  - Some college: " + numEdu3);
         System.out.println("  - BS degree: " + numEdu4);
-        System.out.println("  - Advanced degree (MS, Ph.D., JD, MD, etc.) : " + numEdu5);
+        System.out.println("  - Advanced degree (MS, Ph.D., JD, MD, etc.): " + numEdu5);
         
         /* Geographic distribution */
         System.out.println("\nDistribution of respondents by geographic region:");
@@ -230,7 +230,21 @@ public class SurveyReader {
 
         /* MR5 - Movie Ratings */
         /* ArrayLists of movie ratings hold scores of value zero */
-        System.out.println("\nTotal number of non-zero ratings: " + numNonZeroRatings);
+        System.out.println("\nTotal number of non-zero ratings for each movie:");
+        System.out.println("  - Star Wars: A New Hope: " + starRatings.size());
+        System.out.println("  - Godfather: " + godRatings.size());
+        System.out.println("  - Memento: " + memRatings.size());
+        System.out.println("  - Saw: " + sawRatings.size());
+        System.out.println("  - Rocky: " + rockyRatings.size());
+        System.out.println("  - Princess Bride: " + princessRatings.size());
+        System.out.println("  - Sleepless in Seattle: " + sleepRatings.size());
+        System.out.println("  - Pretty Woman: " + prettyRatings.size());
+        System.out.println("  - Avatar: " + avatarRatings.size());
+        System.out.println("  - Dogma: " + dogRatings.size());
+        System.out.println("  - Batman Begins: " + batRatings.size());
+        System.out.println("  - Suicide Squad: " + suicideRatings.size());
+        System.out.println("  - Beverly Hills Cop: " + beverleyRatings.size());
+
         System.out.println("\nAverage rating of each movie:");
         System.out.println("  - Star Wars: A New Hope: " + starAvg);
         System.out.println("  - Godfather: " + godAvg);
@@ -244,7 +258,7 @@ public class SurveyReader {
         System.out.println("  - Dogma: " + dogAvg);
         System.out.println("  - Batman Begins: " + batAvg);
         System.out.println("  - Suicide Squad: " + suicideAvg);
-        System.out.println("  - Beverley Hells Cop: " + beverleyAvg);
+        System.out.println("  - Beverly Hills Cop: " + beverleyAvg);
         
         /* Movie standard deviations */
         System.out.println("\nStandard deviation for each movie's ratings:");
@@ -260,17 +274,13 @@ public class SurveyReader {
         System.out.println("  - Dogma: " + dogStdDev);
         System.out.println("  - Batman Begins: " + batStdDev);
         System.out.println("  - Suicide Squad: " + suicideStdDev);
-        System.out.println("  - Beverley Hells Cop: " + beverleyStdDev);
+        System.out.println("  - Beverly Hills Cop: " + beverleyStdDev);
        
         /* MR6 - Movie Ratings by Gender (for each movie) */
-        System.out.println("\nTotal number of non-zero ratings by gender:");
-        System.out.println("  - Male: " + maleNonZeroCount);
-        System.out.println("  - Female: " + femaleNonZeroCount);
-        System.out.println("  - N/A responses: " + naNonZeroCount);
 
         System.out.println("\nTotal number of non-zero ratings by gender:");
         for (int i = 0; i < NUM_MOVIES; i++) {
-            System.out.println("  -" + movieNames.get(i) + ":");
+            System.out.println("  - " + movieNames.get(i) + ":");
             System.out.println("    - Males: " + maleRatingCounts[i]);
             System.out.println("    - Females: " + femaleRatingCounts[i]);
             System.out.println("    - N/A responses: " + naRatingCounts[i]);
@@ -278,7 +288,7 @@ public class SurveyReader {
 
         System.out.println("\nAverage movie rating by gender:"); // should we divide by numMales?
         for (int i = 0; i < NUM_MOVIES; i++) {
-            System.out.println("  -" + movieNames.get(i) + ":");
+            System.out.println("  - " + movieNames.get(i) + ":");
             System.out.println("    - Males: " + (maleRatings[i] / numMales > 0 ? maleRatings[i] / numMales : 0)); //numMales?
             System.out.println("    - Females: " + (femaleRatings[i] / numFemales > 0 ? femaleRatings[i] / numFemales : 0)); //numFemales?
             System.out.println("    - N/A responses: " + (naRatings[i] / numNa > 0 ? naRatings[i] / numNa : 0));
@@ -329,7 +339,19 @@ public class SurveyReader {
         obj.put("numPac", numPac);
 
         /* MR5 - Movie Ratings */
-        obj.put("numNonZeroRatings", numNonZeroRatings);
+        obj.put("nonZeroStarRatings", starRatings.size());
+        obj.put("nonZeroGodRatings", godRatings.size());
+        obj.put("nonZeroMemRatings", memRatings.size());
+        obj.put("nonZeroSawRatings", sawRatings.size());
+        obj.put("nonZeroRockyRatings", rockyRatings.size());
+        obj.put("nonZeroPrinRatings", princessRatings.size());
+        obj.put("nonZeroSeattleRatings", sleepRatings.size());
+        obj.put("nonZeroPrettyRatings", prettyRatings.size());
+        obj.put("nonZeroAvaRatings", avatarRatings.size());
+        obj.put("nonZeroDogmaRatings", dogRatings.size());
+        obj.put("nonZeroBatRatings", batRatings.size());
+        obj.put("nonZeroSuicRatings", suicideRatings.size());
+        obj.put("nonZeroBevRatings", beverleyRatings.size());
 
         obj.put("starWarsAvgRating", starAvg);
         obj.put("godfatherAvgRating", godAvg);
@@ -343,7 +365,7 @@ public class SurveyReader {
         obj.put("dogAvgRating", dogAvg);
         obj.put("batmanBeginsAvgRating", batAvg);
         obj.put("suicideSquadAvgRating", suicideAvg);
-        obj.put("beverleyHillCopAvgRating", beverleyAvg);
+        obj.put("beverlyHillCopAvgRating", beverleyAvg);
        
         /* ST DEV GOES HERE */
         obj.put("starWarsStdDev", starStdDev);
@@ -358,7 +380,7 @@ public class SurveyReader {
         obj.put("dogmaStdDev", dogStdDev);
         obj.put("batmanBeginsStdDev", batStdDev);
         obj.put("suicideSquadStdDev", suicideStdDev);
-        obj.put("beverleyHillsCopStdDev", beverleyStdDev);
+        obj.put("beverlyHillsCopStdDev", beverleyStdDev);
 
         /* MR6 - Ratings by Gender */
         obj.put("maleNonZeroCount", maleNonZeroCount);
@@ -411,9 +433,9 @@ public class SurveyReader {
         femaleRatings = new double[NUM_MOVIES];
         naRatings = new double[NUM_MOVIES];
         
-        maleRatingCounts = new double[NUM_MOVIES];
-        femaleRatingCounts = new double[NUM_MOVIES];
-        naRatingCounts = new double[NUM_MOVIES];
+        maleRatingCounts = new int[NUM_MOVIES];
+        femaleRatingCounts = new int[NUM_MOVIES];
+        naRatingCounts = new int[NUM_MOVIES];
         
         /* Lists */
         neStates = Arrays.asList("ME", "NH", "VT", "MA", "RI", "NY", "NJ", "PA", "DE", "MD", "WV", "DC", "CT");
@@ -613,9 +635,11 @@ public class SurveyReader {
                 naRatings[index] += score;   
             }
 
-            /* Add movie rating to the movie's arraylist of scores */
-            addMovieScore(score, index);
-
+            /* Add movie rating to the movie's arraylist of scores if the user has seen the film */
+            if (score > 0) {
+                addMovieScore(score, index);
+            }
+            
             index++;
         }
     }
