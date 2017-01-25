@@ -413,19 +413,19 @@ public class SurveyJson {
         }
         
         /* Add the ratings to the JSONArray */
-        ratings.add(df.format(starScore));
-        ratings.add(df.format(godScore));
-        ratings.add(df.format(memScore));
-        ratings.add(df.format(sawScore));
-        ratings.add(df.format(rockyScore));
-        ratings.add(df.format(prinScore));
-        ratings.add(df.format(sleepScore));
-        ratings.add(df.format(prettyScore));
-        ratings.add(df.format(avaScore));
-        ratings.add(df.format(dogScore));
-        ratings.add(df.format(batScore));
-        ratings.add(df.format(suicScore));
-        ratings.add(df.format(bevScore));
+        ratings.add(Double.parseDouble(df.format(starScore)));
+        ratings.add(Double.parseDouble(df.format(godScore)));
+        ratings.add(Double.parseDouble(df.format(memScore)));
+        ratings.add(Double.parseDouble(df.format(sawScore)));
+        ratings.add(Double.parseDouble(df.format(rockyScore)));
+        ratings.add(Double.parseDouble(df.format(prinScore)));
+        ratings.add(Double.parseDouble(df.format(sleepScore)));
+        ratings.add(Double.parseDouble(df.format(prettyScore)));
+        ratings.add(Double.parseDouble(df.format(avaScore)));
+        ratings.add(Double.parseDouble(df.format(dogScore)));
+        ratings.add(Double.parseDouble(df.format(batScore)));
+        ratings.add(Double.parseDouble(df.format(suicScore)));
+        ratings.add(Double.parseDouble(df.format(bevScore)));
         
         return ratings;
     }
