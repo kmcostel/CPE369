@@ -30,11 +30,11 @@ public class surveyGen {
          SurveyJson gen = new SurveyJson();
 
          try (FileWriter file = new FileWriter(outFile)) {
-            JSONArray objArr = new JSONArray();
+            file.write("[");
             for (int i = 0; i < numObjs; i++) {
-               objArr.add(gen.genObject().toJSONString());
+               file.write(gen.genObject().toJSONString() + ",\n");
             } 
-            file.write(objArr.toJSONString());
+            file.write("]");
             file.close();
          }
          catch (Exception e) {
