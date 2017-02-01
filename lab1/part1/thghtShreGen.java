@@ -25,9 +25,11 @@ public class thghtShreGen {
          JsonGen gen = new JsonGen(numObjs, outFile);
 
          try (FileWriter file = new FileWriter(outFile)) {
+            file.write("[");
             for (int i = 0; i < numObjs; i++) {
-               file.write(gen.JSON_Object().toJSONString() + "\n");
+               file.write(gen.JSON_Object().toJSONString() + ",\n");
             } 
+            file.write("]");
             file.close();
          }
          catch (Exception e) {
