@@ -80,26 +80,26 @@ public class ratingsPredictor {
    
    /* Follows the math formula given */
    private static double sim(ArrayList<Integer> xRats, ArrayList<Integer> yRats) {
-       double xAvg = getAvg(xRats);
-       double yAvg = getAvg(yRats);
+       // double xAvg = getAvg(xRats);
+       // double yAvg = getAvg(yRats);
        
-       double numerator = 0.0;
+       // double numerator = 0.0;
        
-       double xDenomSum = 0.0;
-       double yDenomSum = 0.0;
+       // double xDenomSum = 0.0;
+       // double yDenomSum = 0.0;
        
-       double denominator = 0.0;
+       // double denominator = 0.0;
        
-       for (int i = 0; i < NUM_MOVIES; i++) {
-          numerator += (xRats.get(i) - xAvg) * (yRats.get(i) - yAvg);
+       // for (int i = 0; i < NUM_MOVIES; i++) {
+       //    numerator += (xRats.get(i) - xAvg) * (yRats.get(i) - yAvg);
           
-          xDenomSum += ((xRats.get(i) - xAvg) * (xRats.get(i) - xAvg));
-          yDenomSum += ((yRats.get(i) - yAvg) * (yRats.get(i) - yAvg));
-       }
+       //    xDenomSum += ((xRats.get(i) - xAvg) * (xRats.get(i) - xAvg));
+       //    yDenomSum += ((yRats.get(i) - yAvg) * (yRats.get(i) - yAvg));
+       // }
        
-       denominator = Math.sqrt(xDenomSum) * Math.sqrt(yDenomSum);
+       // denominator = Math.sqrt(xDenomSum) * Math.sqrt(yDenomSum);
        
-       return numerator / denominator;
+       // return numerator / denominator;
             
    }
    
