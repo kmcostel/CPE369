@@ -1,7 +1,7 @@
 ## Lab 5 - Mongo Connectivity With Java
 
 ### Compilation Instructions
-    javac -cp mongo-java-driver-3.4.2.jar ratingsPredictor.java
+    ./compilePredictor.sh 
 
 ###Contributors
 * Holly Haraguchi (hharaguc@calpoly.edu)

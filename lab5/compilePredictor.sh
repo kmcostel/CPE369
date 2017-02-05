@@ -1,3 +1,3 @@
 #!/bin/bash
 
-javac -cp mongo-java-driver-3.4.2.jar ratingsPredictor.java
+javac -cp json-simple-1.1.1.jar mongo-java-driver-3.4.2.jar ratingsPredictor.java
