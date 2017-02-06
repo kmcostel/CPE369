@@ -2,7 +2,7 @@ import com.mongodb.*;
 import com.mongodb.client.model.Aggregates.*;
 import com.mongodb.client.*;
 import com.mongodb.client.model.*;
-import org.bson.Document.*;
+import org.bson.Document;
 import org.json.simple.parser.*;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
@@ -13,6 +13,19 @@ import org.json.simple.*;
 import java.io.*;
 import java.lang.Math;
 import java.lang.Object;
+
+
+import java.util.Arrays;
+import com.mongodb.Block;
+
+import static com.mongodb.client.model.Filters.*;
+import com.mongodb.client.result.DeleteResult;
+import static com.mongodb.client.model.Updates.*;
+import com.mongodb.client.result.UpdateResult;
+import java.util.List;
+
+
+
 
 public class ratingsPredictor {
 
@@ -45,7 +58,8 @@ public class ratingsPredictor {
             String password = (String) jsonObj.get("password");
             String db = (String) jsonObj.get("db");
            
-            DB dbAuth = client.getDB(authDb);
+            // check this out --> http://api.mongodb.com/java/current/com/mongodb/MongoClientURI.html
+            MongoDatabase dbAuth = client.getDatabase(authDb);
             boolean auth = dbAuth.authenticate(user, password);
            
             // Print error message if the authentication was not successful
@@ -130,8 +144,8 @@ public class ratingsPredictor {
     private static double getUserRatings (String userId) {
        
        ratingsColl.aggregate(
-           Array.asList(
-               match(eq("userId", userId)) 
+           Arrays.asList(
+               new Document("$match", new Document("username", userId))
            )
        );
        
