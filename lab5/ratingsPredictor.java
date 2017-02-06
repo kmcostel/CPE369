@@ -14,9 +14,12 @@ import java.io.*;
 import java.lang.Math;
 import java.lang.Object;
 
-
+import java.nio.file.Paths;
+import java.nio.file.Files;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import com.mongodb.Block;
+import com.mongodb.MongoCredential;
 
 import static com.mongodb.client.model.Filters.*;
 import com.mongodb.client.result.DeleteResult;
@@ -36,7 +39,7 @@ public class ratingsPredictor {
     private static final String ratingsCollName = "ratings";
     private static final String jsonFileName = "ratings350.json";
     private static MongoClient client;
-    private static MongoCollection<Document> ratingsColl;
+    private static DBCollection ratingsColl;
    
     private static boolean ratingsCollFound;
 
@@ -44,9 +47,6 @@ public class ratingsPredictor {
    
     public static void main(String args[]) throws FileNotFoundException, IOException {
         try {
-            // Connect to the MongoDB server
-            client = new MongoClient(server, port); 
-           
             // Authenticate
             JSONParser parser = new JSONParser();
            
@@ -55,32 +55,22 @@ public class ratingsPredictor {
             JSONObject jsonObj = (JSONObject) obj;
             String authDb = (String) jsonObj.get("authDb");
             String user  = (String) jsonObj.get("user");
-            String password = (String) jsonObj.get("password");
+            char[] password = ((String) jsonObj.get("password")).toCharArray();
             String db = (String) jsonObj.get("db");
+            
+            // Connect to the MongoDB server
+            ServerAddress seed = new ServerAddress(server, port);
+            MongoCredential cred = MongoCredential.createCredential(user, authDb, password);
+            client = new MongoClient(seed, Arrays.asList(cred));          
            
-            // check this out --> http://api.mongodb.com/java/current/com/mongodb/MongoClientURI.html
-            MongoDatabase dbAuth = client.getDatabase(authDb);
-            boolean auth = dbAuth.authenticate(user, password);
-           
-            // Print error message if the authentication was not successful
-            if (!auth) {
-                System.out.println("ERROR: Could not authenticate user");
-                System.exit(1);
-            }
-           
-            // Check collection existence
-            MongoIterable<String> collNames = db.listCollectionNames();
-            for (String name : collNames) {
-                if (name.equals(ratingsCollName)) {
-                    ratingsCollFound = true;
-                }
-            }
-           
-            // Upload the ratings dataset if the collection does not exist
-            if (!ratingsCollFound) {
-                db.createCollection(ratingsCollName);
-                ratingsColl = db.getCollection(ratingsCollName);
-                ratingsColl.insertMany(Files.readAllLines(jsonFileName, Charset.forName("US-ASCII")));    
+            // Switch to the specified database
+            DB dbObj = client.getDB(db);
+
+            // Check collection existence; upload the ratings dataset if the collection does not exist
+            if (!(dbObj.collectionExists(ratingsCollName))) {
+                dbObj.createCollection(ratingsCollName, null);
+                ratingsColl = dbObj.getCollection(ratingsCollName);
+                ratingsColl.insert((BasicDBList)Files.readAllLines(Paths.get(jsonFileName), Charset.forName("US-ASCII")));    
             }
            
         } 
@@ -143,11 +133,15 @@ public class ratingsPredictor {
     /* Query the database to find this user's document, then access their rating array */
     private static double getUserRatings (String userId) {
        
-       ratingsColl.aggregate(
-           Arrays.asList(
-               new Document("$match", new Document("username", userId))
-           )
-       );
+       DBObject match = new BasicDBObject();
+      DBObject usrname = new BasicDBObject();
+      //obj.put("$match", new 
+
+       // ratingsColl.aggregate(
+       //     Arrays.asList(
+       //         new Document("$match", new Document("username", userId))
+       //     )
+       // );
        
     }
    
