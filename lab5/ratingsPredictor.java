@@ -2,6 +2,7 @@ import com.mongodb.*;
 import com.mongodb.client.model.Aggregates.*;
 import com.mongodb.client.*;
 import com.mongodb.client.model.*;
+import com.mongodb.util.JSON;
 import org.bson.Document;
 import org.json.simple.parser.*;
 import org.json.simple.JSONObject;
@@ -44,7 +45,6 @@ public class ratingsPredictor {
     private static boolean ratingsCollFound;
 
    
-   
     public static void main(String args[]) throws FileNotFoundException, IOException {
         try {
             // Authenticate
@@ -58,20 +58,46 @@ public class ratingsPredictor {
             char[] password = ((String) jsonObj.get("password")).toCharArray();
             String db = (String) jsonObj.get("db");
             
+            System.out.println("Done parsing auth file");
+
             // Connect to the MongoDB server
             ServerAddress seed = new ServerAddress(server, port);
             MongoCredential cred = MongoCredential.createCredential(user, authDb, password);
+            // client = new MongoClient(server);
             client = new MongoClient(seed, Arrays.asList(cred));          
            
+            System.out.println("Done connecting to server");
+
             // Switch to the specified database
-            DB dbObj = client.getDB(db);
+            MongoDatabase userDb = client.getDatabase(db);
+            System.out.println("Done getting database " + db);
 
             // Check collection existence; upload the ratings dataset if the collection does not exist
-            if (!(dbObj.collectionExists(ratingsCollName))) {
-                dbObj.createCollection(ratingsCollName, null);
-                ratingsColl = dbObj.getCollection(ratingsCollName);
-                ratingsColl.insert((BasicDBList)Files.readAllLines(Paths.get(jsonFileName), Charset.forName("US-ASCII")));    
-            }
+            MongoIterable<String> collNames = userDb.listCollectionNames();
+            // collNames.forEach(new Block<String>() {
+            //   @Override
+            //   public void apply(final String nm) {
+            //     if (nm.equals(ratingsCollName)) {
+            //       ratingsCollFound = true;
+            //     }
+            //   }
+              
+            // }); 
+
+            // if (!(userDb.collectionExists(ratingsCollName))) {
+            // if (!ratingsCollFound) {
+              System.out.println("Could not find collection " + ratingsCollName);
+              //   userDb.createCollection(ratingsCollName, null);
+              //   ratingsColl = userDb.getCollection(ratingsCollName);
+
+                // ratingsColl.insert((BasicDBList)(Files.readAllLines(Paths.get(jsonFileName), Charset.forName("US-ASCII")))); 
+                // ratingsColl.insert((DBObject)JSON.parse(new String(Files.readAllBytes(Paths.get(jsonFileName)))));  
+
+                // DBCursor cursor = ratingsColl.find();
+                // while (cursor.hasNext()) {
+                //   System.out.println(cursor.next());
+                // } 
+            // }
            
         } 
         catch (Exception e) {
@@ -104,7 +130,8 @@ public class ratingsPredictor {
        // denominator = Math.sqrt(xDenomSum) * Math.sqrt(yDenomSum);
        
        // return numerator / denominator;
-            
+
+      return Double.MAX_VALUE;        
    }
    
    /* Average user rating */
@@ -126,6 +153,7 @@ public class ratingsPredictor {
    /* Query to retrieve this particular user's document...? */
     private static double getNormFactor (String userId, int movieNdx) {
         //ArrayList<Double> getUserRatings(userId);
+      return Double.MAX_VALUE;
     }
    
     /* http://mongodb.github.io/mongo-java-driver/3.4/driver/tutorials/aggregation/ */
@@ -133,7 +161,7 @@ public class ratingsPredictor {
     /* Query the database to find this user's document, then access their rating array */
     private static double getUserRatings (String userId) {
        
-       DBObject match = new BasicDBObject();
+      DBObject match = new BasicDBObject();
       DBObject usrname = new BasicDBObject();
       //obj.put("$match", new 
 
@@ -142,7 +170,7 @@ public class ratingsPredictor {
        //         new Document("$match", new Document("username", userId))
        //     )
        // );
-       
+      return Double.MAX_VALUE; 
     }
    
    /* Average movie rating & in the similarity calculation. 
@@ -150,6 +178,7 @@ public class ratingsPredictor {
       Very generic, can be used for any list average */
    private static double getMovieAvg (int movieNdx) {
       
+      return Double.MAX_VALUE;
    }
       
 

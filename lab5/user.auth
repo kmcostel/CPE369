@@ -1,10 +1,6 @@
-// Holly Haraguchi, Kevin Costello
-// Lab 5, Winter 2016
-
-// Stores authentication information that is used by ratingsPredictor.java
 {
-   authDb: "hharaguc",
-   user: "hharaguc", 
-   password: "xai7Aithalei",
-   db: "ratings"
+   "authDb": "hharaguc",
+   "user": "hharaguc", 
+   "password": "holly96",
+   "db": "hharaguc"
 }
