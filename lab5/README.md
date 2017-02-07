@@ -3,6 +3,12 @@
 ### Compilation Instructions
     ./compilePredictor.sh 
 
-###Contributors
+### Run Instructions
+    ./runPredictor.sh
+
+### Contributors
 * Holly Haraguchi (hharaguc@calpoly.edu)
 * Kevin Costello (kmcostel@calpoly.edu)
+
+### Notes
+* Our program assumes that the .json source file used to populate the ratings survey lists the objects line by line.
