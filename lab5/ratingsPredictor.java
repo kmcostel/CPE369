@@ -74,15 +74,15 @@ public class ratingsPredictor {
 
             // Check collection existence; upload the ratings dataset if the collection does not exist
             MongoIterable<String> collNames = userDb.listCollectionNames();
-            // collNames.forEach(new Block<String>() {
-            //   @Override
-            //   public void apply(final String nm) {
-            //     if (nm.equals(ratingsCollName)) {
-            //       ratingsCollFound = true;
-            //     }
-            //   }
+            collNames.forEach(new Block<String>() {
+              @Override
+              public void apply(final String nm) {
+                if (nm.equals(ratingsCollName)) {
+                  ratingsCollFound = true;
+                }
+              }
               
-            // }); 
+            }); 
 
             // if (!(userDb.collectionExists(ratingsCollName))) {
             // if (!ratingsCollFound) {
@@ -100,8 +100,11 @@ public class ratingsPredictor {
             // }
            
         } 
-        catch (Exception e) {
+        catch (MongoSocketOpenException e) {
             System.out.println("EXCEPTION CAUGHT: " + e.toString());
+        }
+        catch(Exception e) {
+          System.out.println("ERROR: " + e.toString());
         }
        
     }
