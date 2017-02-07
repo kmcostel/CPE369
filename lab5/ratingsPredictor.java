@@ -99,7 +99,7 @@ public class ratingsPredictor {
 
                 // }
                 Document doc = new Document();
-                ratingsColl.insertOne(doc.parse((Files.readAllLines(Paths.get(jsonFileName), Charset.forName("US-ASCII"))))); 
+                ratingsColl.insertOne(doc.parse((Files.readAllLines(Paths.get(jsonFileName), Charset.forName("US-ASCII"))).get(0))); 
                 // ratingsColl.insertMany((DBObject)JSON.parse(new String(Files.readAllBytes(Paths.get(jsonFileName)))));  
 
                 // DBCursor cursor = ratingsColl.find();
