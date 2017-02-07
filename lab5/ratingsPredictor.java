@@ -38,11 +38,11 @@ public class ratingsPredictor {
     private static final int port = 27017;
     private static final String authFile = "user.auth";
     private static final int NUM_MOVIES = 13;
-    private static final String ratingsCollName;
     private static final String jsonFileName = "ratings350.json";
     private static MongoClient client;
     private static MongoCollection<Document> ratingsColl;
    
+    private static String ratingsCollName;
     private static boolean ratingsCollFound;
 
    
