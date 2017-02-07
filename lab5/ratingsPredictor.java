@@ -33,7 +33,7 @@ import java.util.List;
 
 public class ratingsPredictor {
 
-    private static final String server = "cslvm31.csc.calpoly.edu";
+    private static final String server = "localhost";
     private static final int port = 27017;
     private static final String authFile = "user.auth";
     private static final int NUM_MOVIES = 13;
@@ -78,14 +78,16 @@ public class ratingsPredictor {
               @Override
               public void apply(final String nm) {
                 if (nm.equals(ratingsCollName)) {
+                  System.out.println("match found");
                   ratingsCollFound = true;
                 }
               }
               
             }); 
 
+
             // if (!(userDb.collectionExists(ratingsCollName))) {
-            // if (!ratingsCollFound) {
+            if (!ratingsCollFound) {
               System.out.println("Could not find collection " + ratingsCollName);
               //   userDb.createCollection(ratingsCollName, null);
               //   ratingsColl = userDb.getCollection(ratingsCollName);
@@ -97,7 +99,7 @@ public class ratingsPredictor {
                 // while (cursor.hasNext()) {
                 //   System.out.println(cursor.next());
                 // } 
-            // }
+             }
            
         } 
         catch (MongoSocketOpenException e) {
