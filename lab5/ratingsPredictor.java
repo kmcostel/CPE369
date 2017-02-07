@@ -38,7 +38,7 @@ public class ratingsPredictor {
     private static final int port = 27017;
     private static final String authFile = "user.auth";
     private static final int NUM_MOVIES = 13;
-    private static final String ratingsCollName = "ratings";
+    private static final String ratingsCollName;
     private static final String jsonFileName = "ratings350.json";
     private static MongoClient client;
     private static MongoCollection<Document> ratingsColl;
@@ -57,7 +57,7 @@ public class ratingsPredictor {
             String authDb = (String) jsonObj.get("authDb");
             String user  = (String) jsonObj.get("user");
             char[] password = ((String) jsonObj.get("password")).toCharArray();
-            String db = (String) jsonObj.get("db");
+            ratingsCollName = (String) jsonObj.get("db");
             
             System.out.println("Done parsing auth file");
 
@@ -70,8 +70,8 @@ public class ratingsPredictor {
             System.out.println("Done connecting to server");
 
             // Switch to the specified database
-            MongoDatabase userDb = client.getDatabase(db);
-            System.out.println("Done getting database " + db);
+            MongoDatabase userDb = client.getDatabase(user);
+            System.out.println("Done getting database " + user);
 
             // Check collection existence; upload the ratings dataset if the collection does not exist
             MongoIterable<String> collNames = userDb.listCollectionNames();
@@ -86,30 +86,26 @@ public class ratingsPredictor {
               
             }); 
 
-
-            // if (!(userDb.collectionExists(ratingsCollName))) {
+            /* Populate the ratings collection if it does not already exist */
             if (!ratingsCollFound) {
-                System.out.println("Could not find collection " + ratingsCollName);
-                userDb.createCollection(ratingsCollName, new CreateCollectionOptions());
-                ratingsColl = userDb.getCollection(ratingsCollName);
-                System.out.println("Created collection " + ratingsCollName);
-                // List<Document> docs = new List<Document>();
-                // Scanner sc = new Scanner(new File(jsonFileName));
 
-                // while (sc.hasNext()) {
-                //     System.out.println(sc.next());
-                // }
-                Document doc = new Document();
-                List<String> entries = Files.readAllLines(Paths.get(jsonFileName), Charset.forName("US-ASCII"));
-                System.out.println(entries.size());
+              userDb.createCollection(ratingsCollName, new CreateCollectionOptions());
+              ratingsColl = userDb.getCollection(ratingsCollName);
 
-                // ratingsColl.insertOne(doc.parse((Files.readAllLines(Paths.get(jsonFileName), Charset.forName("US-ASCII"))).get(0))); 
-                // ratingsColl.insertMany((DBObject)JSON.parse(new String(Files.readAllBytes(Paths.get(jsonFileName)))));  
+              /* Iterate over the .json file and insert the objects one by one */
+              Document doc = new Document();
+              Scanner sc = new Scanner(new File(jsonFileName));
+              while (sc.hasNext()) {
+                ratingsColl.insertOne(doc.parse(sc.next()));
+              }
 
-                // DBCursor cursor = ratingsColl.find();
-                // while (cursor.hasNext()) {
-                //   System.out.println(cursor.next());
-                // } 
+              // ratingsColl.insertOne(doc.parse((Files.readAllLines(Paths.get(jsonFileName), Charset.forName("US-ASCII"))).get(0))); 
+              // ratingsColl.insertMany((DBObject)JSON.parse(new String(Files.readAllBytes(Paths.get(jsonFileName)))));  
+
+              // DBCursor cursor = ratingsColl.find();
+              // while (cursor.hasNext()) {
+              //   System.out.println(cursor.next());
+              // } 
              }
            
         } 
