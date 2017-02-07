@@ -92,8 +92,8 @@ public class ratingsPredictor {
                 userDb.createCollection(ratingsCollName, null);
                 ratingsColl = userDb.getCollection(ratingsCollName);
 
-                // ratingsColl.insert((BasicDBList)(Files.readAllLines(Paths.get(jsonFileName), Charset.forName("US-ASCII")))); 
-                ratingsColl.insert((DBObject)JSON.parse(new String(Files.readAllBytes(Paths.get(jsonFileName)))));  
+                ratingsColl.insertMany((Files.readAllLines(Paths.get(jsonFileName), Charset.forName("US-ASCII")))); 
+                // ratingsColl.insertMany((DBObject)JSON.parse(new String(Files.readAllBytes(Paths.get(jsonFileName)))));  
 
                 DBCursor cursor = ratingsColl.find();
                 while (cursor.hasNext()) {
