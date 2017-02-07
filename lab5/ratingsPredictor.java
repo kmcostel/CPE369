@@ -47,72 +47,53 @@ public class ratingsPredictor {
 
    
     public static void main(String args[]) throws FileNotFoundException, IOException {
-        try {
-            // Authenticate
-            JSONParser parser = new JSONParser();
-           
-            // Parse the 'user.auth' file
-            Object obj = parser.parse(new FileReader(authFile));
-            JSONObject jsonObj = (JSONObject) obj;
-            String authDb = (String) jsonObj.get("authDb");
-            String user  = (String) jsonObj.get("user");
-            char[] password = ((String) jsonObj.get("password")).toCharArray();
-            ratingsCollName = (String) jsonObj.get("db");
-            
-            System.out.println("Done parsing auth file");
+      try {
+          /* Authenticate */
+          JSONParser parser = new JSONParser();
+         
+          /* Parse the 'user.auth' file */
+          Object obj = parser.parse(new FileReader(authFile));
+          JSONObject jsonObj = (JSONObject) obj;
+          String authDb = (String) jsonObj.get("authDb");
+          String user  = (String) jsonObj.get("user");
+          char[] password = ((String) jsonObj.get("password")).toCharArray();
+          ratingsCollName = (String) jsonObj.get("db");
+          
+          /* Connect to the MongoDB server */
+          ServerAddress seed = new ServerAddress(server, port);
+          MongoCredential cred = MongoCredential.createCredential(user, authDb, password);
+          client = new MongoClient(seed, Arrays.asList(cred));          
+         
+          /* Switch to the user's database */
+          MongoDatabase userDb = client.getDatabase(user);
 
-            // Connect to the MongoDB server
-            ServerAddress seed = new ServerAddress(server, port);
-            MongoCredential cred = MongoCredential.createCredential(user, authDb, password);
-            // client = new MongoClient(server);
-            client = new MongoClient(seed, Arrays.asList(cred));          
-           
-            System.out.println("Done connecting to server");
-
-            // Switch to the specified database
-            MongoDatabase userDb = client.getDatabase(user);
-            System.out.println("Done getting database " + user);
-
-            // Check collection existence; upload the ratings dataset if the collection does not exist
-            MongoIterable<String> collNames = userDb.listCollectionNames();
-            collNames.forEach(new Block<String>() {
-              @Override
-              public void apply(final String nm) {
-                if (nm.equals(ratingsCollName)) {
-                  System.out.println("match found");
-                  ratingsCollFound = true;
-                }
+          /* Check collection existence */
+          MongoIterable<String> collNames = userDb.listCollectionNames();
+          collNames.forEach(new Block<String>() {
+            @Override
+            public void apply(final String nm) {
+              if (nm.equals(ratingsCollName)) {
+                ratingsCollFound = true;
               }
-              
-            }); 
+            }             
+          }); 
 
-            /* Populate the ratings collection if it does not already exist */
-            if (!ratingsCollFound) {
+          /* Create and populate the ratings collection since it does not already exist */
+          if (!ratingsCollFound) {
+            userDb.createCollection(ratingsCollName, new CreateCollectionOptions());
+            ratingsColl = userDb.getCollection(ratingsCollName);
 
-              userDb.createCollection(ratingsCollName, new CreateCollectionOptions());
-              ratingsColl = userDb.getCollection(ratingsCollName);
-
-              /* Iterate over the .json file and insert the objects one by one */
-              Document doc = new Document();
-              Scanner sc = new Scanner(new File(jsonFileName));
-              while (sc.hasNext()) {
-                ratingsColl.insertOne(doc.parse(sc.next()));
-              }
-
-              // ratingsColl.insertOne(doc.parse((Files.readAllLines(Paths.get(jsonFileName), Charset.forName("US-ASCII"))).get(0))); 
-              // ratingsColl.insertMany((DBObject)JSON.parse(new String(Files.readAllBytes(Paths.get(jsonFileName)))));  
-
-              // DBCursor cursor = ratingsColl.find();
-              // while (cursor.hasNext()) {
-              //   System.out.println(cursor.next());
-              // } 
-             }
-           
-        } 
-        catch(Exception e) {
-          System.out.println("ERROR: " + e.toString());
-        }
-       
+            /* Iterate over the .json file and insert the objects one by one */
+            Document doc = new Document();
+            Scanner sc = new Scanner(new File(jsonFileName));
+            while (sc.hasNext()) {
+              ratingsColl.insertOne(doc.parse(sc.next()));
+            }
+          }        
+      } 
+      catch(Exception e) {
+        System.out.println("EXCEPTION CAUGHT: " + e.toString());
+      }
     }
    
    
