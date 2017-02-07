@@ -90,7 +90,7 @@ public class ratingsPredictor {
             // if (!(userDb.collectionExists(ratingsCollName))) {
             if (!ratingsCollFound) {
               System.out.println("Could not find collection " + ratingsCollName);
-                userDb.createCollection(ratingsCollName, null);
+                userDb.createCollection(ratingsCollName, new CreateCollectionOptions(null, 10, true));
                 ratingsColl = userDb.getCollection(ratingsCollName);
         System.out.println("Created collection " + ratingsCollName);
                 // List<Document> docs = new List<Document>();
