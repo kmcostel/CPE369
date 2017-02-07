@@ -92,7 +92,14 @@ public class ratingsPredictor {
                 userDb.createCollection(ratingsCollName, null);
                 ratingsColl = userDb.getCollection(ratingsCollName);
 
-                ratingsColl.insertMany((Files.readAllLines(Paths.get(jsonFileName), Charset.forName("US-ASCII")))); 
+                // List<Document> docs = new List<Document>();
+                // Scanner sc = new Scanner(new File(jsonFileName));
+
+                // while (sc.hasNext()) {
+
+                // }
+                Document doc = new Document();
+                ratingsColl.insertMany(doc.parse((Files.readAllLines(Paths.get(jsonFileName), Charset.forName("US-ASCII"))))); 
                 // ratingsColl.insertMany((DBObject)JSON.parse(new String(Files.readAllBytes(Paths.get(jsonFileName)))));  
 
                 DBCursor cursor = ratingsColl.find();
