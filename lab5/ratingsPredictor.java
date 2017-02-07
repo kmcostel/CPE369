@@ -99,7 +99,13 @@ public class ratingsPredictor {
 
                 // }
                 Document doc = new Document();
-                ratingsColl.insertOne(doc.parse((Files.readAllLines(Paths.get(jsonFileName), Charset.forName("US-ASCII"))).get(0))); 
+                List<String> entries = Files.readAllLines(Paths.get(jsonFileName), Charset.forName("US-ASCII"));
+
+                for (String entry : entries) {
+                  System.out.println(entry);
+                }
+
+                // ratingsColl.insertOne(doc.parse((Files.readAllLines(Paths.get(jsonFileName), Charset.forName("US-ASCII"))).get(0))); 
                 // ratingsColl.insertMany((DBObject)JSON.parse(new String(Files.readAllBytes(Paths.get(jsonFileName)))));  
 
                 // DBCursor cursor = ratingsColl.find();
@@ -109,9 +115,6 @@ public class ratingsPredictor {
              }
            
         } 
-        catch (MongoSocketOpenException e) {
-            System.out.println("EXCEPTION CAUGHT: " + e.toString());
-        }
         catch(Exception e) {
           System.out.println("ERROR: " + e.toString());
         }
