@@ -92,7 +92,7 @@ public class ratingsPredictor {
               System.out.println("Could not find collection " + ratingsCollName);
                 userDb.createCollection(ratingsCollName, null);
                 ratingsColl = userDb.getCollection(ratingsCollName);
-
+        System.out.println("Created collection " + ratingsCollName);
                 // List<Document> docs = new List<Document>();
                 Scanner sc = new Scanner(new File(jsonFileName));
 
