@@ -89,8 +89,8 @@ public class ratingsPredictor {
             // if (!(userDb.collectionExists(ratingsCollName))) {
             if (!ratingsCollFound) {
               System.out.println("Could not find collection " + ratingsCollName);
-              //   userDb.createCollection(ratingsCollName, null);
-              //   ratingsColl = userDb.getCollection(ratingsCollName);
+                userDb.createCollection(ratingsCollName, null);
+                ratingsColl = userDb.getCollection(ratingsCollName);
 
                 // ratingsColl.insert((BasicDBList)(Files.readAllLines(Paths.get(jsonFileName), Charset.forName("US-ASCII")))); 
                 ratingsColl.insert((DBObject)JSON.parse(new String(Files.readAllBytes(Paths.get(jsonFileName)))));  
