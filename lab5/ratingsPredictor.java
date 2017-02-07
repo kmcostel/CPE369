@@ -99,13 +99,13 @@ public class ratingsPredictor {
 
                 // }
                 Document doc = new Document();
-                ratingsColl.insertMany(doc.parse((Files.readAllLines(Paths.get(jsonFileName), Charset.forName("US-ASCII"))))); 
+                ratingsColl.insertOne(doc.parse((Files.readAllLines(Paths.get(jsonFileName), Charset.forName("US-ASCII"))))); 
                 // ratingsColl.insertMany((DBObject)JSON.parse(new String(Files.readAllBytes(Paths.get(jsonFileName)))));  
 
-                DBCursor cursor = ratingsColl.find();
-                while (cursor.hasNext()) {
-                  System.out.println(cursor.next());
-                } 
+                // DBCursor cursor = ratingsColl.find();
+                // while (cursor.hasNext()) {
+                //   System.out.println(cursor.next());
+                // } 
              }
            
         } 
