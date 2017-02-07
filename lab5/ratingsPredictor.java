@@ -40,7 +40,7 @@ public class ratingsPredictor {
     private static final String ratingsCollName = "ratings";
     private static final String jsonFileName = "ratings350.json";
     private static MongoClient client;
-    private static DBCollection ratingsColl;
+    private static MongoCollection<Document> ratingsColl;
    
     private static boolean ratingsCollFound;
 
