@@ -12,3 +12,5 @@
 
 ### Notes
 * Our program assumes that the .json source file used to populate the ratings survey lists the objects line by line.
+* After computing simililarities, we look for the existence of a collection named "similarities" and delete it if it exists. Then we recreate the collection and populate it with our similarity calculations.
+
