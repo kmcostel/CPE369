@@ -1,3 +1,7 @@
+/*
+ * Authors: Kevin Costello, Holly Haraguchi
+ */
+
 import com.mongodb.*;
 import static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Accumulators.*;
