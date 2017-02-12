@@ -1,5 +1,6 @@
 /*
  * Authors: Kevin Costello, Holly Haraguchi
+ * CPE 369, Lab 5, Winter 2017
  */
 
 import com.mongodb.*;
