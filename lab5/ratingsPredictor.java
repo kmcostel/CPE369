@@ -223,8 +223,8 @@ public class ratingsPredictor {
        /* movieId == 12 */
        return "Beverly Hills Cop";
     }
-
     
+    /* Get the user rating for movie with id |movieId| */
     private static double getRating(int rid, int mid) {
       AggregateIterable<Document> output = ratingsColl.aggregate(
           Arrays.asList(
@@ -322,7 +322,7 @@ public class ratingsPredictor {
         avgUserRating = (double)dbObj.get("avgUserRating");
       }
             
-      return avgUserRating;  
+      return chopRating(avgUserRating);  
     }
     
     /* Calculates the average movie rating that everyone else 
@@ -345,7 +345,7 @@ public class ratingsPredictor {
         avgMovieRating = (double)dbObj.get("avgMovieRating");
       }
                 
-      return avgMovieRating; 
+      return chopRating(avgMovieRating); 
     }
     
     /* Returns the predicted weighted sum rating */
@@ -382,7 +382,7 @@ public class ratingsPredictor {
         wsRating = (double)dbObj.get("weightedSumRating");
       }
             
-      return wsRating;
+      return chopRating(wsRating);
     }
        
     
@@ -394,6 +394,7 @@ public class ratingsPredictor {
              
       AggregateIterable<Document> output = simColl.aggregate(
         Arrays.asList(
+          project(computed("sim", new Document("$abs", "$sim"))), 
           group(null, sum("cVal", "$sim"))
         )
       );
@@ -472,6 +473,8 @@ public class ratingsPredictor {
              )
             ),
             match(eq("idxDiff", 0)),
+            match(gt("xRats", 0)),
+            match(gt("yRats", 0)),
             project(fields(
               include("xRats", "avgXRats", "yRats", "avgYRats", "xIdx", "yIdx", "xDiff", "yDiff"),
               computed("prod", new Document("$multiply", Arrays.asList("$xDiff", "$yDiff"))),
@@ -571,7 +574,7 @@ public class ratingsPredictor {
         adjWsRating = (double)dbObj.get("adjWsRating");
       }
 
-      return adjWsRating;
+      return chopRating(adjWsRating);
     }  
     
     /*
@@ -605,7 +608,7 @@ public class ratingsPredictor {
         avgMovieRating = (double)dbObj.get("avgMovieRating");
       }
                 
-      return avgMovieRating; 
+      return chopRating(avgMovieRating); 
     }
     
     // Weighted sum predictor
@@ -643,7 +646,7 @@ public class ratingsPredictor {
         wsRating = (double)dbObj.get("weightedSumRating");
       }
             
-      return wsRating;
+      return chopRating(wsRating);
     }
 
     // Adjusted weighted sum predictor
@@ -697,24 +700,18 @@ public class ratingsPredictor {
         adjWsRating = (double)dbObj.get("adjWsRating");
       }
           
-      return adjWsRating;
+      return chopRating(adjWsRating);
     }  
-    
-    private static double getUserMovieRating(int rid, int movieId) {
-      double userRating = 0.0; 
-       
-      AggregateIterable<Document> output = ratingsColl.aggregate(
-          Arrays.asList(
-            match(eq("RID", rid)),
-            unwind("$ratings", new UnwindOptions().includeArrayIndex("idx")),
-            match(eq("idx", movieId))
-          )
-      );
-
-      for (Document dbObj : output) {
-        userRating = (double)dbObj.get("ratings");
+   
+    /* Round |rating| up or down to fit within the rating bounds (1.0 - 10.0) */ 
+    private static double chopRating(double rating) {
+      if (Double.compare(rating, 10.0) > 0) {
+        return 10.0;
+      }
+      else if (Double.compare(rating, 1.0) < 0) {
+        return 1.0;
       }
 
-      return userRating; 
+      return rating;
     }
 }

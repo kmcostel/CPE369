@@ -1,0 +1,30 @@
+{
+RID: 20,
+respondent: {first: Sheryl, last: Zedian},
+MovieId: 5,
+MovieTitle: Princess Bride,
+predictions: [ {type: "Average User", prediction: 6.15},
+{type: "Average Movie", prediction: 6.258620689655173},
+{type: "Weighted sum", prediction: 2.4680269595733755},
+{type: "Adjusted weighted Sum", prediction: 3.479478873568716},
+{type: "NNN Average User", N: 10, prediction: 5.01},
+{type: "NNN Weighted Sum", N: 10, prediction: 0.292834002328815},
+{type: "NNN adjusted weighted sum", N: 10, prediction: 5.911578687210765},
+]
+}
+
+{
+RID: 10,
+respondent: {first: Sherley, last: Roh},
+MovieId: 6,
+MovieTitle: Sleepless in Seattle,
+predictions: [ {type: "Average User", prediction: 5.591666666666666, error: -3.191666666666666},
+{type: "Average Movie", prediction: 4.843916913946588, error: -2.443916913946588},
+{type: "Weighted sum", prediction: 2.918388208965781, error: -0.518388208965781},
+{type: "Adjusted weighted Sum", prediction: 4.19223908775961, error: -1.7922390877596102},
+{type: "NNN Average User", N: 10, prediction: 2.65, error: -0.25},
+{type: "NNN Weighted Sum", N: 10, prediction: 0.1768266525261178, error: 2.223173347473882},
+{type: "NNN adjusted weighted sum", N: 10, prediction: 5.413686524833793, error: -3.0136865248337927},
+]
+}
+
