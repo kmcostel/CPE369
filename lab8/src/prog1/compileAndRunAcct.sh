@@ -1,4 +1,6 @@
 #!/bin/bash
-#javac -cp ../hadoop-core-1.2.1.jar:../json-simple-1.1.1.jar accounting.java
-#jar cvf accounting.jar *.class
-hadoop jar accounting.jar accounting accounting-input.json
+hadoop com.sun.tools.javac.Main accounting.java
+jar cvf accounting.jar accounting*class
+hadoop jar accounting.jar accounting -libjars ../json-simple-1.1.1.jar accounting-input.json accounting-output 
+
+

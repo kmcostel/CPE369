@@ -19,17 +19,20 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat; // class for "po
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.fs.Path;                // Hadoop's implementation of directory path/filename
 
+// Hadoop job configuration and tools
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.util.Tool;
+import org.apache.hadoop.util.ToolRunner;
+
 // Exception handling
 import java.io.IOException;
-
-// Hash map
-import java.util.HashMap;
 
 // JSON Simple
 import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONObject;
 
-public class accounting {
+public class accounting extends Configured implements Tool {
 
     // Mapper Class
     // Input: (<key> , <ThghtShre JSON object>)
@@ -96,9 +99,12 @@ public class accounting {
     }
 
     // Section 4: MapReduce Driver
-    public static void main(String[] args) throws Exception {
+    public int run(String[] args) throws Exception {
+        // Step 0: Configuration
+        Configuration conf = super.getConf();
+
         // Step 1: Get a new MapReduce Job object
-        Job job = Job.getInstance();  
+        Job job = Job.getInstance(conf, "accounting");  
 
         // Step 2: Register the MapReduce class
         job.setJarByClass(accounting.class);  
@@ -118,9 +124,15 @@ public class accounting {
 
         // Step 6: Set up other job parameters at will
         job.setJobName("Prog 1 - Holly Haraguchi + Kevin Costello");
-
+        
         // Step 7
-        System.exit(job.waitForCompletion(true) ? 0:1);
+        return job.waitForCompletion(true) ? 0:1;
+    }
+
+    public static void main(String[] args) throws Exception {
+        Configuration conf = new Configuration();
+        int res = ToolRunner.run(conf, new accounting(), args);
+        System.exit(res);
     }
 }
 
