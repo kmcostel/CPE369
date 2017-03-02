@@ -55,7 +55,7 @@ public class hashtags extends Configured implements Tool {
             String message = (String) jsonObj.get("text");
             String userId = (String) jsonObj.get("user");
             // Split up the messages into individual words, splitting by whitespace and commas.
-            String[] words = message.split(" ");
+            String[] words = message.split("[\\p{Punct}\\s]+");
             
             for (String s: words) {
                 if (contains(s) == false)
