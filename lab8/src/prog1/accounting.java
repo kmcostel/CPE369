@@ -86,12 +86,12 @@ public class accounting extends Configured implements Tool {
                     totalCents += 5;
                 }                             
 
-                numMessages ++;
+                numMessages++;
             }
 
             // Users who write more than 100 messages get an overall 5% discount
             if (numMessages > 100) {
-                totalCents *= 0.05;
+                totalCents *= 0.95;
             }
 
             context.write(key, new Text(String.format("%.2f", totalCents / 100)));
