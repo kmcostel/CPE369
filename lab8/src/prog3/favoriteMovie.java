@@ -1,3 +1,5 @@
+// Kevin Costello and Holly Haraguchi
+
 // CSC 369: Distributed Computing
 // Alex Dekhtyar
 // Multiple input files
