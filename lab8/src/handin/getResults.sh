@@ -1,3 +1,5 @@
+# Kevin Costello and Holly Haraguchi
+# Gets each program's output file and renames them accordingly
 #!/bin/bash
 
 hdfs dfs -get test/accounting-output/part-r-00000 accounting-output.json

@@ -1,4 +1,5 @@
 # Kevin Costello, Holly Haraguchi
+# Puts the input files in a default location, the hdfs directory 'test'
 #!/bin/bash
 
 hdfs dfs -mkdir test
