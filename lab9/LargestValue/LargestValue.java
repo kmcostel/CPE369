@@ -1,6 +1,6 @@
 // Holly Haraguchi and Kevin Costello
 // CSC 369, Winter 2017
-// Lab 11, Problem 2
+// Lab 9
 // Computes the number of hands with the highest value in each file
 
 import org.apache.hadoop.io.IntWritable; // Hadoop's serialized int wrapper class
@@ -17,6 +17,7 @@ import org.apache.hadoop.mapreduce.lib.input.KeyValueTextInputFormat; // key-val
 import org.apache.hadoop.conf.Configuration; // Hadoop's configuration object
 import org.apache.hadoop.fs.Path;                // Hadoop's implementation of directory path/filename
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class LargestValue {
     // Mapper for poker-hand-testing file - file #1
@@ -55,8 +56,8 @@ public class LargestValue {
         public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
             int maxSumF1 = 0;
             int maxSumF2 = 0;
-            int freqF1 = 0;
-            int freqF2 = 0;
+            int freqf1 = 0;
+            int freqf2 = 0;
             
             ArrayList<Integer> f1Vals = new ArrayList<Integer>();
             ArrayList<Integer> f2Vals = new ArrayList<Integer>();
@@ -102,7 +103,7 @@ public class LargestValue {
             
             // Output the file name with a higher frequency of highest hands
             // Note: we don't care which file has the hands of highest value
-            if (freqF1 > freqF2) {
+            if (freqf1 > freqf2) {
                 context.write(new Text("1"), new Text("poker-hand-testing.data.txt"));
             }
             else {
@@ -114,23 +115,23 @@ public class LargestValue {
      
     
     //  MapReduce Driver       
-    public static int main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         
         Configuration conf = new Configuration();
         
         // Job 1: Join Movie IDs and Movie Titles
         Job job1 = Job.getInstance(conf);
-        job1.setJarByClass(favoriteMovie.class);
+        job1.setJarByClass(LargestValue.class);
         
         
         
         // Set up multiple inputs
-        MultipleInputs.addInputPath(job1, new Path("./data/","poker-hand-testing.data.txt"),
+        MultipleInputs.addInputPath(job1, new Path("/data/","poker-hand-testing.data.txt"),
         TextInputFormat.class, HandValueMapper1.class );
-        MultipleInputs.addInputPath(job1, new Path("./data/","poker-hand-traning.true.data.txt"),
+        MultipleInputs.addInputPath(job1, new Path("/data/","poker-hand-traning.true.data.txt"),
         TextInputFormat.class, HandValueMapper2.class );
         
-        FileOutputFormat.setOutputPath(job1, new Path("./test/","max-hand")); // put what you need as output
+        FileOutputFormat.setOutputPath(job1, new Path("./LargestValue-output")); // put what you need as output
         
         // Set up the reducer                
         job1.setReducerClass(MaxHandReducer.class);
