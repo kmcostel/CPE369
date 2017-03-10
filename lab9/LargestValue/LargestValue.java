@@ -21,7 +21,11 @@ import java.util.ArrayList;
 
 public class LargestValue {
     // Mapper for poker-hand-testing file - file #1
-    public static class HandValueMapper1 extends Mapper< LongWritable, Text, Text, Text > {        
+    public static class HandValueMapper1 extends Mapper< LongWritable, Text, Text, Text > { 
+        private int maxVal = 0;
+        private int numMax = 0;
+               
+        @Override       
         public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             
             int sum = 0;
@@ -29,14 +33,38 @@ public class LargestValue {
             
             // Iterate over the cards to find the value of the hand
             for (int i = 1; i < vals.length; i+=2) {
-                sum += Integer.parseInt(vals[i]);
+                int cardVal = Integer.parseInt(vals[i]);
+                // Encountered an ace
+                if (cardVal == 1) {
+                   sum += 14;
+                }
+                else {
+                   sum += cardVal;
+                }
             }
-            context.write(new Text("key"), new Text(sum + "," + "1"));          
+            
+            // New highest value found
+            if (sum > maxVal) {
+                maxVal = sum;
+                numMax = 1;
+            }
+            else if (sum == maxVal) {
+                numMax++;
+            }
+        }
+        
+        @Override
+        protected void cleanup(Context context) throws IOException, InterruptedException {
+            context.write(new Text("1"), new Text(maxVal + "," + numMax));
         } 
     }
     
     // Mapper for poker-hand-training file - file #2
-    public static class HandValueMapper2 extends Mapper< LongWritable, Text, Text, Text > {        
+    public static class HandValueMapper2 extends Mapper< LongWritable, Text, Text, Text > {     
+        private int maxVal = 0;
+        private int numMax = 0;   
+        
+        @Override
         public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             
             int sum = 0;
@@ -44,73 +72,78 @@ public class LargestValue {
             
             // Iterate over the cards to find the value of the hand
             for (int i = 1; i < vals.length; i+=2) {
-                sum += Integer.parseInt(vals[i]);
+                int cardVal = Integer.parseInt(vals[i]);
+                // Encountered an ace
+                if (cardVal == 1) {
+                   sum += 14;
+                }
+                else {
+                   sum += cardVal;
+                } 
             }
-            context.write(new Text("key"), new Text(sum + "," + "2"));          
-        } 
+            
+            // New highest value found
+            if (sum > maxVal) {
+                maxVal = sum;
+                numMax = 1;
+            }
+            else if (sum == maxVal) {
+                numMax++;
+            }
+        }
+        
+        @Override
+        protected void cleanup(Context context) throws IOException, InterruptedException {
+            context.write(new Text("2"), new Text(maxVal + "," + numMax));
+        }  
     }
     
     // Inputs: 
     // Outputs: 
-    public static class MaxHandReducer extends Reducer< Text, Text, Text, Text> {              
+    public static class MaxHandReducer extends Reducer< Text, Text, Text, Text> {   
+        private int maxHand1 = 0;
+        private int numMaxHand1 = 0;
+        
+        private int maxHand2 = 0;
+        private int numMaxHand2 = 0;
+                   
         public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
-            int maxSumF1 = 0;
-            int maxSumF2 = 0;
-            int freqf1 = 0;
-            int freqf2 = 0;
+            String fileNum = key.toString();
             
-            ArrayList<Integer> f1Vals = new ArrayList<Integer>();
-            ArrayList<Integer> f2Vals = new ArrayList<Integer>();
-            
-            // Find the max value of each file
-            for (Text val: values) {
-                // str[0] = sum; str[1] = origFile
-                String[] str = val.toString().split(",");
-                int sum = Integer.parseInt(str[0]);
-                int fileNum = Integer.parseInt(str[1]);
+            for (Text val : values) {
+                String[] splits = val.toString().split(",");
+                int curVal = Integer.parseInt(splits[0]);
+                int curCnt = Integer.parseInt(splits[1]);
                 
-                if (fileNum == 1) {
-                    // Compare to File 1's max hand
-                    if (sum > maxSumF1) {
-                        maxSumF1 = sum;
-                    }                 
-                    // Add the value to the ArrayList for future iteration
-                    f1Vals.add(sum);
-                }
-                else {
-                    // Compare to File 2's max hand
-                    if (sum > maxSumF2) {
-                        maxSumF2 = sum;
+                // Dealing with File #1 values; compare to File #1 variables
+                if (fileNum.equals("1")) {
+                    if (curVal > maxHand1) {
+                        maxHand1 = curVal;
+                        numMaxHand1 = curCnt;
                     }
-                    
-                    // Add the value to the ArrayList for future iteration
-                    f2Vals.add(sum);
+                }
+                // Dealing with File #2 values; compare to File #2 variables
+                else {
+                    if (curVal > maxHand2) {
+                        maxHand2 = curVal;
+                        numMaxHand2 = curCnt;
+                    }
                 }
             }
-            
-            // Count the number of hands with the highest value in each file
-            for (int i = 0; i < f1Vals.size(); i++) {
-                if (f1Vals.get(i) == maxSumF1) {
-                    freqf1++;
-                }
+        }
+        
+        @Override
+        protected void cleanup(Context context) throws IOException, InterruptedException {
+            if (numMaxHand1 > numMaxHand2) {
+                context.write(new Text("Highest value: " + maxHand1), new Text("poker-hand-testing.data.txt"));
             }
-            
-            for (int i = 0; i < f2Vals.size(); i++) {
-                if (f2Vals.get(i) == maxSumF2) {
-                    freqf2++;
-                }
-            }
-            
-            // Output the file name with a higher frequency of highest hands
-            // Note: we don't care which file has the hands of highest value
-            if (freqf1 > freqf2) {
-                context.write(new Text("1"), new Text("poker-hand-testing.data.txt"));
+            else if (numMaxHand2 > numMaxHand1) {
+                context.write(new Text("Highest value: " + maxHand2), new Text("poker-hand-traning.true.data.txt"));
             }
             else {
-                context.write(new Text("1"), new Text("poker-hand-traning.true.data.txt"));
+                context.write(new Text("Same number of hands with the highest value"), new Text("poker-hand-testing.data.txt and poker-hand-traning.true.data.txt"));
             }
-            
-        }        
+        }                  
     }
      
     
@@ -123,15 +156,13 @@ public class LargestValue {
         Job job1 = Job.getInstance(conf);
         job1.setJarByClass(LargestValue.class);
         
-        
-        
         // Set up multiple inputs
         MultipleInputs.addInputPath(job1, new Path("/data/","poker-hand-testing.data.txt"),
         TextInputFormat.class, HandValueMapper1.class );
         MultipleInputs.addInputPath(job1, new Path("/data/","poker-hand-traning.true.data.txt"),
         TextInputFormat.class, HandValueMapper2.class );
         
-        FileOutputFormat.setOutputPath(job1, new Path("./LargestValue-output")); // put what you need as output
+        FileOutputFormat.setOutputPath(job1, new Path("LargestValue-output")); // put what you need as output
         
         // Set up the reducer                
         job1.setReducerClass(MaxHandReducer.class);

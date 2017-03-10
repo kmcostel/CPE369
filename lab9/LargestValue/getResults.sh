@@ -1,2 +1,2 @@
 #!/bin/bash
-hdfs dfs -text LargestValue-output/part-r-10000
+hdfs dfs -text LargestValue-output/part-r-00000
