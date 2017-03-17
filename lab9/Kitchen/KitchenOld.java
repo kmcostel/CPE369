@@ -20,6 +20,7 @@ import org.apache.hadoop.fs.Path;                // Hadoop's implementation of d
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Queue;
 import java.util.LinkedList;
 import java.util.List;
@@ -70,9 +71,10 @@ public class KitchenUse {
             // sub_metering_1 is the kitchen!!!!!
             
             String text = value.toString();
-            String[] splits = text.split(";");
+            
             // Dealing with valid input; NOT the first line of the file
-            if (text.charAt(0) != 'D' || !(splits[3].equals("?"))) {            
+            if (text.charAt(0) != 'D' || text.charAt(0) != '?') {            
+                String[] splits = text.split(";");
                 Date date = new Date();
                 
                 // Set the current date and time
