@@ -28,39 +28,40 @@ import java.util.HashMap;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Set;
+import java.util.PriorityQueue;
+import java.util.Comparator;
 
 public class KitchenUse {
-    
-    // Mapper for poker-hand-testing file - file #1
     public static class KitchenMapper extends Mapper< LongWritable, Text, Text, Text > {    
         // Have a linked list as queue to store the current 5 time values    
-        Queue<MyData> myQ = new LinkedList<MyData>();
-        HashMap<Double, UsagePair> map = new HashMap<Double, UsagePair>();
-        
-        private class MyData {
-           Date myDate;
-           double power;
-           public MyData(Date date, double p) {
-              myDate = date;
-              power = p;
-           }
-           public double getPower() {return power;}
-           public Date getDate() {return myDate;}
+        private static Queue<String> lastFive;
+        // Have a priority queue for Top-K usage differences
+        private static PriorityQueue<String> topDiffs;
+        private static int K = 20;
+        public static Comparator<String> UsageDiffComparator = new Comparator<String>() {
+            @Override
+            public int compare(String x, String y) {
+                double firstUsage = Double.parseDouble(x.split("///")[0]);
+                double secUsage = Double.parseDouble(y.split("///")[0]);
+
+                int compareVal = Double.compare(firstUsage, secUsage);
+                if (compareVal < 0) {
+                   return -1;
+                }
+                else if (compareVal > 0) {
+                   return 1;
+                }
+                return 0;
+            }
+        };
+   
+        @Override
+        // Initialize our priority queue
+        protected void setup(Context context) throws IOException, InterruptedException { 
+            lastFive = new LinkedList<String>();
+            topDiffs = new PriorityQueue<String>(K, UsageDiffComparator);
         }
-        
-        private class UsagePair {
-           MyData data1;
-           MyData data2;
-           public UsagePair (MyData d1, MyData d2) {
-              data1 = d1;
-              data2 = d2;
-           }
-           
-           public String toString() {
-               return data1.getDate().toString() + "," + data1.getPower() + "," + data2.getDate().toString() + "," + data2.getPower();
-           }
-        }
-        
+
         @Override
         public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             // Ignore first line in input (First character is a "D")
@@ -71,63 +72,54 @@ public class KitchenUse {
             
             String text = value.toString();
             String[] splits = text.split(";");
-            // Dealing with valid input; NOT the first line of the file
-            if (text.charAt(0) != 'D' || !(splits[3].equals("?"))) {            
-                Date date = new Date();
-                
-                // Set the current date and time
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy HH:mm:ss");
-                try {
-                    String dateTimeStr = splits[0] + " " + splits[1];
-                    date = sdf.parse(dateTimeStr); 
-                }
-                catch (Exception e) {
-                    System.out.println("ERROR: Could not parse date");
-                    System.exit(1);
-                }              
-                
+            // Dealing with valid input; NOT the first line of the file and does not contain garbage usage readings
+            if (text.charAt(0) != 'D' && !(splits[3].equals("?"))) {            
+                String dateTimeStr = splits[0] + " " + splits[1];
+ 
                 // Parse the kitchen usage
                 double kitchUsage = Double.parseDouble(splits[6]);
-                MyData curData = new MyData(date, kitchUsage);
+                String curData = dateTimeStr + ";" + kitchUsage;
                 
-                if (myQ.size() == 5) {                    
-                    MyData first = myQ.remove();
-                    Double firstUsage = first.getPower();
-                    Double diff = kitchUsage - firstUsage;
-                    map.put(diff, new UsagePair(first, curData));                    
-                }
+                if (lastFive.size() == 5) {                    
+                    String firstData = lastFive.remove();
+                    double firstUsage = Double.parseDouble(firstData.split(";")[1]);
+                    double diff = kitchUsage - firstUsage;
+                    String usagePair = diff + "///" + firstData + "///" + curData;
+                    
+                    if (topDiffs.size() < K) {
+                       topDiffs.add(usagePair);
+                    } 
+                    else {
+                       double oldDiff = Double.parseDouble(topDiffs.peek().split("///")[0]);
+                       
+                       // Larger usage difference found
+                       if (Double.compare(diff, oldDiff) > 0) {
+                           topDiffs.remove();
+                           topDiffs.add(usagePair);
+                       }
+                    }
+               }
                 
-                myQ.add(curData);                             
+               lastFive.add(curData);                             
            }
                            
         }
         
         @Override
         protected void cleanup(Context context) throws IOException, InterruptedException {
-            Set<Double> keySet = map.keySet();
-            List<Double> keys = new ArrayList(keySet);
-                          
-            Collections.sort(keys);
-            Collections.reverse(keys);
-            // Emit top 20 from list           
-            for (int i = 0; i < 20 && i < keys.size(); i++) {
-                //UsagePair myPair = map.get(keys.get(i));
-                //context.write(new Text(Double.toString(keys.get(i))), new Text(myPair.toString()));
-            }
-            context.write(new Text("foo"), new Text("bar"));
+           // Write the top 20 usage differences with key=<usageDifference> and value=<individualTimeUsageInfo>
+           for (String obj : topDiffs) {
+               String[] splits = obj.split("///");
+               context.write(new Text(splits[0]), new Text(splits[1] + " " + splits[2]));
+           }
         }
- 
     }
     
-    // Inputs: Key=<date,time>, Value=[ (<time1, <time1, powerVal1>), (<time1>, <time5, powerVal2>) ]
-    // Outputs: 
     public static class KitchenReducer extends Reducer< Text, Text, Text, Text> {              
         public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
-            
             for (Text t: values) {
                 context.write(key, t);
             }
-     
         }        
     }
      
@@ -141,7 +133,6 @@ public class KitchenUse {
         job.setJarByClass(KitchenUse.class);
         
         // Set I/O
-        FileInputFormat.setInputPaths(job, new Path("./100.in")); 
         FileOutputFormat.setOutputPath(job, new Path("kitchenUse-output")); // put what you need as output
                 
         // Set the map and reduce classes
@@ -153,10 +144,10 @@ public class KitchenUse {
         job.setOutputValueClass(Text.class); // specify the output class (what reduce() emits) for value
         
          
-        //job.setInputFormatClass(NLineInputFormat.class);
-        //NLineInputFormat.addInputPath(job, new Path("./100.in"));
-        //job.getConfiguration().setInt(
-         //       "mapreduce.input.lineinputformat.linespermap", 1000); 
+        job.setInputFormatClass(NLineInputFormat.class);
+        NLineInputFormat.addInputPath(job, new Path("/data/household_power_consumption.txt"));
+        job.getConfiguration().setInt(
+                "mapreduce.input.lineinputformat.linespermap", 800); 
         
         
         job.setJobName("Household Kitchen Power");
