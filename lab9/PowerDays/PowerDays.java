@@ -38,10 +38,10 @@ public class PowerDays {
             // TODO Get the date
             String text = value.toString();
             String[] splits = text.split(";");
-            String usage = splits[3];
+            String usage = splits[2];
             
             // Dealing with valid input; NOT the first line of the file
-            if (text.charAt(0) != 'D' || !(usage.equals("?"))) {                            
+            if (text.charAt(0) != 'D' && !(usage.equals("?"))) {                            
                 String date = splits[0];
                 
                 // Output the date with its current usage
@@ -56,7 +56,11 @@ public class PowerDays {
     public static class SingleDayReducer extends Reducer< Text, Text, Text, Text> {              
         public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
             String date = key.toString();
-            String year = date.split("/")[2];
+            String[] dateSplits = date.split("/");
+            String year = "";
+            if (dateSplits.length == 3) {
+                year = dateSplits[2];
+            }
             double totalUsage = 0.0;
             double curUse = 0.0;
             
@@ -66,7 +70,7 @@ public class PowerDays {
                 totalUsage += curUse;                
             }     
             
-            context.write(new Text(year), new Text(date + ";" + curUse));     
+            context.write(new Text(year), new Text(date + ";" + totalUsage));     
         }        
     }
     
@@ -121,7 +125,8 @@ public class PowerDays {
         job1.setJarByClass(PowerDays.class);
         
         // Set up file I/O
-        FileInputFormat.addInputPath(job1, new Path("/data/household_power_consumption.txt"));        
+        //FileInputFormat.addInputPath(job1, new Path("/data/household_power_consumption.txt"));        
+        FileInputFormat.addInputPath(job1, new Path("./power_sample.txt"));        
         FileOutputFormat.setOutputPath(job1, new Path("./power-out")); // put what you need as output file
         
         // Set Mapper and Reducer
