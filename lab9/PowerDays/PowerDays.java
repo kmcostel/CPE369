@@ -126,8 +126,11 @@ public class PowerDays {
         job1.setJarByClass(PowerDays.class);
         
         // Set up file I/O
-        //FileInputFormat.addInputPath(job1, new Path("/data/household_power_consumption.txt"));        
-        FileInputFormat.addInputPath(job1, new Path("./power_sample.txt"));        
+        //FileInputFormat.addInputPath(job1, new Path("./power_sample.txt"));        
+        job.setInputFormatClass(NLineInputFormat.class);
+        NLineInputFormat.addInputPath(job, new Path("/data/household_power_consumption.txt"));
+        job.getConfiguration().setInt(
+                "mapreduce.input.lineinputformat.linespermap", 800); 
         FileOutputFormat.setOutputPath(job1, new Path("./power-out")); // put what you need as output file
         
         // Set Mapper and Reducer
