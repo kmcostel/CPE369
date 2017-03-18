@@ -1,5 +1,4 @@
 # Holly Haraguchi, Kevin Costello
-# CSC 369
 # Lab 9, Problem 7: Power Days
 # Gets the output from our Hadoop job as a file called 'powerDays.output'
 

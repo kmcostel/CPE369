@@ -1,6 +1,7 @@
 // Holly Haraguchi and Kevin Costello
 // CSC 369, Winter 2017
 // Lab 9, Problem 7: Power Days
+// Finds the days with the highest active global power consumption in each year
 
 // Section 1: Imports
 import java.util.ArrayList;
