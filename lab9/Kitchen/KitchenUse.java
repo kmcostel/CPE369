@@ -1,6 +1,6 @@
 // Holly Haraguchi and Kevin Costello
 // CSC 369, Winter 2017
-// Lab 9 - Problem 8 Power Consumption
+// Lab 9, Problem 8 - Kitchen Use 
 // Finds the 20 largest differences in power consumption in the kitchen
 
 import org.apache.hadoop.io.IntWritable; // Hadoop's serialized int wrapper class
@@ -133,6 +133,7 @@ public class KitchenUse {
         job.setJarByClass(KitchenUse.class);
         
         // Set I/O
+        FileInputFormat.addInputPath(job, new Path("/data/household_power_consumption.txt"));
         FileOutputFormat.setOutputPath(job, new Path("kitchenUse-output")); // put what you need as output
                 
         // Set the map and reduce classes
@@ -144,11 +145,11 @@ public class KitchenUse {
         job.setOutputValueClass(Text.class); // specify the output class (what reduce() emits) for value
         
          
-        job.setInputFormatClass(NLineInputFormat.class);
+        /*job.setInputFormatClass(NLineInputFormat.class);
         NLineInputFormat.addInputPath(job, new Path("/data/household_power_consumption.txt"));
         job.getConfiguration().setInt(
                 "mapreduce.input.lineinputformat.linespermap", 800); 
-        
+        */
         
         job.setJobName("Household Kitchen Power");
                 
